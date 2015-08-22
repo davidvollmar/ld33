@@ -3,16 +3,18 @@ var Monster = require('./monster');
 var Cell = require('./cell');
 var CellType = require('./CellType');
 var Wall = require('./wall');
+var Pacman = require('./pacman.js');
 
 class World {
 	constructor(json) {
 		this.json = json;
 
-		this.playingField = new Array(this.json.playingField.width);
-		for(var i = 0; i<this.json.playingField.width; i++) {
-			this.playingField[i] = new Array(this.json.playingField.height);
+		this.modelWidth = this.json.playingField.width;
+		this.modelHeight = this.json.playingField.height;
+		this.playingField = new Array(this.modelWidth);
+		for(var i = 0; i<this.modelWidth; i++) {
+			this.playingField[i] = new Array(this.modelHeight);
 		}
-		var test = this.playingField;
 
 		this.monsters = this.json.monsters.map((def) => {
 			var monster = new Monster();
@@ -38,6 +40,10 @@ class World {
 			}
 		});
 
+		this.pacman = new Pacman();
+		this.pacman.x = this.json.pacman.x;
+		this.pacman.y = this.json.pacman.y;
+
 
 		this.scene = new PIXI.DisplayObjectContainer();
 		this.applyToScene(this.scene);
@@ -54,10 +60,9 @@ class World {
 			stage.addChild(monster);
 		});
 
-		/*this.walls.forEach((wall) => {
-			stage.addChild(wall);
-		})*/
+		stage.addChild(this.pacman);
 	}
+
 }
 
 module.exports = World;

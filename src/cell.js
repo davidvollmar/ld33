@@ -14,7 +14,7 @@ class Cell extends GameObject {
      * @param x int the model coordinates
      */
     constructor(type, x, y) {
-        super();
+        super(x, y);
 
         if(type) {
             this.cellType = type;

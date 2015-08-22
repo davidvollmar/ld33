@@ -16,7 +16,7 @@ class Monster extends GameObject {
 	}
 
 	init() {
-
+		
 	}
 }
 	

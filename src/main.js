@@ -2,13 +2,9 @@ var PIXI = require('pixi.js');
 var kd = require('keydrown');
 var World = require('./world');
 
-var height = document.body.clientHeight;
-var width = document.body.clientWidth;
-var renderer = new PIXI.CanvasRenderer(width, 1000);
-
-//var renderer = new PIXI.autoDetectRenderer(800, 600);
-var scale = Math.min(width / 800, height / 600);
-//scale = 1;
+var canvasHeight = document.body.clientHeight;
+var canvasWidth = document.body.clientWidth;
+var renderer = new PIXI.CanvasRenderer(canvasWidth, canvasHeight);
 
 document.body.appendChild(renderer.view);
 
@@ -47,12 +43,19 @@ function animate() {
 	if (activeWorld) {	
 		if(activeWorld.monsters) {
 			activeWorld.monsters.forEach((monster) => {
+				//TODO alter model coordinate depending on direction
+				var newCoords = toCanvasCoordinates(monster.modelx, monster.modely);
+				monster.x = newCoords[0];
+				monster.y = newCoords[1];
 				monster.init();
 			});
 		}
 
 		if(activeWorld.walls) {
 			activeWorld.walls.forEach((wall) => {
+				var newCoords = toCanvasCoordinates(wall.modelx, wall.modely);
+				wall.x = newCoords[0];
+				wall.y = newCoords[1];
 				wall.init();
 			});
 		}
@@ -61,6 +64,16 @@ function animate() {
 	renderer.render(stage);	
 	
 	requestAnimationFrame(animate);
+}
+
+function toModelCoordinates(x, y) {
+	return [x / canvasWidth * activeWorld.modelWidth,
+			y / canvasHeight * activeWorld.modelHeight];
+}
+
+function toCanvasCoordinates(x, y) {
+	return [x / activeWorld.modelWidth * canvasWidth,
+			y / activeWorld.modelHeight * canvasHeight];
 }
 
 kd.Q.down(() => {
