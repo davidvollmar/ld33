@@ -21,7 +21,7 @@ var levels = {
 var wintext = new PIXI.Text("Hello World", {
 					font: "100px Arial",
 					fill: 'white',
-				});	;
+				});
 var keypressed = false;
 
 var activeWorld = null;
