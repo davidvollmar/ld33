@@ -7,9 +7,12 @@ var watchify = require('watchify');
 var babel = require('babelify');
 
 function compile(watch) {
-	var bundler = watchify(browserify('./src/main.js', {debug: true}).transform(babel));
+	// browsifying our code
+	var bundler = browserify('./src/main.js', {debug: true}).transform(babel);
 
 	function rebundle() {
+		console.log('-> bundling...');
+		
 		bundler.bundle()
 			.on('error', function (err) {
 				console.error(err);
@@ -20,28 +23,24 @@ function compile(watch) {
 			.pipe(sourcemaps.init({loadMaps: true}))
 			.pipe(sourcemaps.write('./'))
 			.pipe(gulp.dest('./build'));
+		
+		console.log('done');
 	}
 
 	if (watch) {
+		bundler = watchify(bundler);
 		bundler.on('update', function () {
-			console.log('-> bundling...');
 			rebundle();
-			console.log('done');
 		});
 	}
 
 	rebundle();
 }
 
-function watch() {
-	return compile(true);
-}
-
 gulp.task('build', function () {
-	return compile();
+	return compile(false);
 });
 gulp.task('watch', function () {
-	return watch();
+	return compile(true);
 });
-
 gulp.task('default', ['build']);
