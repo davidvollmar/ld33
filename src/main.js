@@ -12,16 +12,16 @@ var scale = Math.min(width / 800, height / 600);
 
 document.body.appendChild(renderer.view);
 
-var stage = new PIXI.Stage;
+var stage = new PIXI.Stage();
 
 var levels = {
-	0: require('../levels/level.json'),	
+	0: require('../levels/level.json')
 };
 
 var wintext = new PIXI.Text("Hello World", {
 					font: "100px Arial",
-					fill: 'white',
-				});	;
+					fill: 'white'
+				});
 var keypressed = false;
 
 var activeWorld = null;
@@ -45,9 +45,17 @@ function animate() {
 	}
 	
 	if (activeWorld) {	
-		if(activeWorld.enemies) {
-			activeWorld.enemies.forEach((enemy) => {
-				enemy.init();
+		if(activeWorld.monsters) {
+			activeWorld.monsters.forEach((monster) => {
+				monster.rotation += 0.1;
+				monster.init();
+			});
+		}
+
+		if(activeWorld.walls) {
+			activeWorld.walls.forEach((wall) => {
+				wall.rotation += 0.1;
+				wall.init();
 			});
 		}
 	}
