@@ -1,4 +1,19 @@
 {
+  "name": "ManCap",
+  "version": "0.0.1",
+  "description": "An entry for Ludum Dare 33",
+  "main": "index.js",
+  "license": "MIT",
+  
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/davidvollmar/ld33"
+  },
+  
+  "scripts": {
+    "start": "node index.js"
+  },
+  
   "dependencies": {
     "babelify": "^6.0.2",
     "browserify": "^9.0.8",
@@ -11,6 +26,8 @@
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0",
     "watchify": "^3.1.1",
-    "wheel": "0.0.0"
+    "wheel": "0.0.0",	
+    "express": "~4.9.x",
+	"ejs": "~2.3.3"
   }
 }
