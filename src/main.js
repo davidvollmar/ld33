@@ -18,7 +18,7 @@ var levels = {
 	0: require('../levels/level.json')
 };
 
-var wintext = new PIXI.Text("Hello World", {
+var wintext = new PIXI.Text("Test change", {
 					font: "100px Arial",
 					fill: 'white'
 				});
