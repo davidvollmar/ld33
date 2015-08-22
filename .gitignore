@@ -28,3 +28,7 @@ node_modules
 
 # intellij
 .idea
+
+#gulp
+node_modules
+build
