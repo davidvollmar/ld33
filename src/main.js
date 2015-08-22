@@ -2,7 +2,8 @@ var PIXI = require('pixi.js');
 var kd = require('keydrown');
 var World = require('./world');
 
-var canvasHeight = document.body.clientHeight;
+//var canvasHeight = document.body.clientHeight; //this does not work in chrome apparently
+var canvasHeight = 900;
 var canvasWidth = document.body.clientWidth;
 var renderer = new PIXI.CanvasRenderer(canvasWidth, canvasHeight);
 
