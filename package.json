@@ -2,7 +2,7 @@
   "dependencies": {
     "babelify": "^6.0.2",
     "browserify": "^9.0.8",
-    "gulp": "^3.8.11",
+    "gulp": "^3.9.0",
     "gulp-sourcemaps": "^1.5.2",
     "keydrown": "^1.1.2",
     "pixi.js": "^2.2.9",

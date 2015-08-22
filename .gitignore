@@ -28,6 +28,7 @@ node_modules
 
 # intellij
 .idea
+*.iml
 
 #gulp
 node_modules
