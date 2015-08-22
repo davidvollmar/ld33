@@ -4,7 +4,7 @@ var World = require('./world');
 
 var height = document.body.clientHeight;
 var width = document.body.clientWidth;
-var renderer = new PIXI.CanvasRenderer(width, height);
+var renderer = new PIXI.CanvasRenderer(width, 1000);
 
 //var renderer = new PIXI.autoDetectRenderer(800, 600);
 var scale = Math.min(width / 800, height / 600);

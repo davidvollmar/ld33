@@ -13,7 +13,7 @@ class Enemy extends GameObject {
 		this.clear();
 		
 		 // create a texture from an image path
-		var texture = PIXI.Texture.fromImage("./resources/pacman.png");
+		var texture = PIXI.Texture.fromImage("../resources/pacman.png");
 		// create a new Sprite using the texture
 		var pacman = new PIXI.Sprite(texture);
 	 
