@@ -37,7 +37,7 @@ function loadWorld() {
 
 function animate() {
 	kd.tick();
-	
+
 	if(keypressed) {		
 		stage.addChild(wintext);
 	} else {
@@ -53,12 +53,11 @@ function animate() {
 
 		if(activeWorld.walls) {
 			activeWorld.walls.forEach((wall) => {
-				wall.rotation += 0.1;
 				wall.init();
 			});
 		}
 	}
-	
+
 	renderer.render(stage);	
 	
 	requestAnimationFrame(animate);

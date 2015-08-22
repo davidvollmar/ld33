@@ -1,10 +1,16 @@
 {
+  "playingField":
+	{
+	"width": 50,
+	"height": 50
+  	},
+
   "walls": [
 	{
 	  "x": 0,
 	  "y": 0,
-	  "width": 200,
-	  "height": 200
+	  "width": 20,
+	  "height": 20
 	}
   ],
 
