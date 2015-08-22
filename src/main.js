@@ -52,14 +52,14 @@ function animate() {
 			});
 		}
 
-		if(activeWorld.walls) {
+		/*if(activeWorld.walls) {
 			activeWorld.walls.forEach((wall) => {
 				var newCoords = toCanvasCoordinates(wall.modelx, wall.modely);
 				wall.x = newCoords[0];
 				wall.y = newCoords[1];
 				wall.init();
 			});
-		}
+		}*/
 	}
 
 	renderer.render(stage);	
@@ -69,12 +69,12 @@ function animate() {
 
 function toModelCoordinates(x, y) {
 	return [x / canvasWidth * activeWorld.modelWidth,
-			y / canvasHeight * activeWorld.modelHeight];
+		y / canvasHeight * activeWorld.modelHeight];
 }
 
 function toCanvasCoordinates(x, y) {
 	return [x / activeWorld.modelWidth * canvasWidth,
-			y / activeWorld.modelHeight * canvasHeight];
+		y / activeWorld.modelHeight * canvasHeight];
 }
 
 kd.Q.down(() => {
@@ -84,3 +84,5 @@ kd.Q.down(() => {
 kd.W.down(() => {
 	keypressed = false;
 });
+
+

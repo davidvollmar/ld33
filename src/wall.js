@@ -21,9 +21,13 @@ class Wall extends Cell {
     		sprite.width = 100;
     		sprite.height = 100;
         // TODO: setting sprite x and y
-        
+        	var canvasCoords = this.toCanvasCoordinates(x,y);
+			this.x = canvasCoords[0];
+			this.y = canvasCoords[1];
     		this.addChild(sprite);
     }
+
+
 }
 
 module.exports = Wall;

@@ -34,7 +34,7 @@ class World {
 			if(this.playingField) {
 				for(var i = def.x; i<def.x + def.width; i++) {
 					for(var j = def.y; j<def.y + def.height; j++) {
-						this.playingField[i][j] = new Wall(1, 1);
+						this.playingField[i][j] = new Wall(i, j);
 					}
 				}
 			}
