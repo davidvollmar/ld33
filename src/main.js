@@ -24,12 +24,14 @@ var wintext = new PIXI.Text("Hello World", {
 				});	;
 var keypressed = false;
 
-loadLevel();
+var activeWorld = null;
+loadWorld();
 
 requestAnimationFrame(animate);
 
-function loadLevel() {
+function loadWorld() {
 	var world = new World(levels[0]);
+	activeWorld = world;
 	stage.addChild(world.scene);
 }
 
@@ -40,6 +42,14 @@ function animate() {
 		stage.addChild(wintext);
 	} else {
 		stage.removeChild(wintext);		
+	}
+	
+	if (activeWorld) {	
+		if(activeWorld.enemies) {
+			activeWorld.enemies.forEach((enemy) => {
+				enemy.init();
+			});
+		}
 	}
 	
 	renderer.render(stage);	

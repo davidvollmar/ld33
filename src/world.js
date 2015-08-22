@@ -1,5 +1,5 @@
 var PIXI = require('pixi.js');
-var Enemy = require('./Enemy');
+var Enemy = require('./enemy');
 
 class World {
 	constructor(json) {
@@ -17,6 +17,7 @@ class World {
 	applyToScene(stage) {
 		this.enemies.forEach((enemy) => {
 			stage.addChild(enemy);
+			console.log("added enemy to scene");
 		});
 	}
 }

@@ -10,6 +10,8 @@ class Enemy extends GameObject {
 	}
 
 	init() {
+		this.clear();
+		
 		 // create a texture from an image path
 		var texture = PIXI.Texture.fromImage("./resources/pacman.png");
 		// create a new Sprite using the texture
@@ -20,8 +22,8 @@ class Enemy extends GameObject {
 		pacman.anchor.y = 0.5;
 	 
 		// move the sprite t the center of the screen
-		pacman.position.x = 200;
-		pacman.position.y = 150;
+		pacman.position.x = this.x;
+		pacman.position.y = this.y;
 	}
 }
 	
