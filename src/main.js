@@ -34,9 +34,9 @@ function animate() {
 }
 
 kd.Q.down(() => {
-	keypressed = true;	
+	keypressed = true;
 });
 
 kd.W.down(() => {
-	keypressed = false;	
+	keypressed = false;
 });
