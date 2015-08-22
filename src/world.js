@@ -9,8 +9,6 @@ class World {
 			var monster = new Monster();
 			monster.x = def.x;
 			monster.y = def.y;
-			monster.width = 100;
-			monster.height = 100;
 			return monster;
 		});
 
