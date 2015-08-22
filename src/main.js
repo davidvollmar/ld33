@@ -47,7 +47,6 @@ function animate() {
 	if (activeWorld) {	
 		if(activeWorld.monsters) {
 			activeWorld.monsters.forEach((monster) => {
-				monster.rotation += 0.1;
 				monster.init();
 			});
 		}

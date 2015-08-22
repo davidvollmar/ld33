@@ -1,27 +1,20 @@
 var PIXI = require('pixi.js');
 var GameObject = require('./gameobject');
 
-class Monster extends PIXI.Sprite {
+class Monster extends GameObject {
 	constructor() {
+		super();
+
 		// create a texture from an image path
-		var texture = PIXI.Texture.fromImage("../resources/pacman.png");
-		super(texture);
+		var sprite = PIXI.Sprite.fromImage("../resources/pacman.png");
+		this.width = 100;
+		this.height = 100;
+		this.addChild(sprite);
 
 		this.init();
 	}
 
 	init() {
-		this.width = 100;
-		this.height = 100;
-
-		// center the sprites anchor point
-		this.anchor.x = 100;
-		this.anchor.y = 100;
-	 
-		// move the sprite t the center of the screen
-		this.position.x = this.x;
-		this.position.y = this.y;
-
 
 	}
 }
