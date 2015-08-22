@@ -9,7 +9,7 @@ var renderer = new PIXI.CanvasRenderer(canvasWidth, canvasHeight);
 
 document.body.appendChild(renderer.view);
 
-var stage = new PIXI.Stage();
+var stage = new PIXI.Stage(0xFFFFFF);
 
 var levels = {
 	0: require('../levels/level.json')
