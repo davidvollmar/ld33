@@ -11,7 +11,8 @@
   },
   
   "scripts": {
-    "start": "node index.js"
+    "start": "node app.js",
+	"postinstall": "gulp build"
   },
   
   "dependencies": {

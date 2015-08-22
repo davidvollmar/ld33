@@ -22,7 +22,7 @@ function compile(watch) {
 			.pipe(buffer())
 			.pipe(sourcemaps.init({loadMaps: true}))
 			.pipe(sourcemaps.write('./'))
-			.pipe(gulp.dest('./build'));
+			.pipe(gulp.dest('./public/build'));
 		
 		console.log('done');
 	}
@@ -40,7 +40,13 @@ function compile(watch) {
 gulp.task('build', function () {
 	return compile(false);
 });
+
 gulp.task('watch', function () {
 	return compile(true);
 });
+
+gulp.task('heroku:production', function(){
+  runSeq('build')
+});
+
 gulp.task('default', ['build']);
