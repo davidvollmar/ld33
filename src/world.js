@@ -1,24 +1,38 @@
 var PIXI = require('pixi.js');
-var Enemy = require('./enemy');
-
+var Monster = require('./monster');
+var Wall = require('./wall');
 class World {
 	constructor(json) {
 		this.json = json;
-		this.enemies = this.json.enemies.map((def) => {
-			var enemy = new Enemy();
-			enemy.x = def.x;
-			enemy.y = def.y;
-			return enemy;
+
+		this.monsters = this.json.monsters.map((def) => {
+			var monster = new Monster();
+			monster.x = def.x;
+			monster.y = def.y;
+			return monster;
 		});
+
+		this.walls = this.json.walls.map((def) => {
+			console.log("def: " + def.x + " " + def.y + " " + def.width + " "+ def.height);
+			var wall = new Wall(def.width, def.height);
+			wall.x = def.x;
+			wall.y = def.y;
+			return wall;
+		});
+
+
 		this.scene = new PIXI.DisplayObjectContainer();
 		this.applyToScene(this.scene);
 	}
 	
 	applyToScene(stage) {
-		this.enemies.forEach((enemy) => {
-			stage.addChild(enemy);
-			console.log("added enemy to scene");
+		this.monsters.forEach((monster) => {
+			stage.addChild(monster);
 		});
+
+		this.walls.forEach((wall) => {
+			stage.addChild(wall);
+		})
 	}
 }
 
