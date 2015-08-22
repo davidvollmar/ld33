@@ -10,6 +10,14 @@ class World {
 			enemy.y = def.y;
 			return enemy;
 		});
+		this.scene = new PIXI.DisplayObjectContainer();
+		this.applyToScene(this.scene);
+	}
+	
+	applyToScene(stage) {
+		this.enemies.forEach((enemy) => {
+			stage.addChild(enemy);
+		});
 	}
 }
 

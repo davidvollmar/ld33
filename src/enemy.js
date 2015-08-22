@@ -10,7 +10,19 @@ class Enemy extends GameObject {
 	}
 
 	init() {
-		//TODO draw
+		 // create a texture from an image path
+		var texture = PIXI.Texture.fromImage("./resources/pacman.png");
+		// create a new Sprite using the texture
+		var pacman = new PIXI.Sprite(texture);
+	 
+		// center the sprites anchor point
+		pacman.anchor.x = 0.5;
+		pacman.anchor.y = 0.5;
+	 
+		// move the sprite t the center of the screen
+		pacman.position.x = 200;
+		pacman.position.y = 150;
 	}
+}
 	
 module.exports = Enemy;

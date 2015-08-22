@@ -1,5 +1,6 @@
 var PIXI = require('pixi.js');
 var kd = require('keydrown');
+var World = require('./world');
 
 var height = document.body.clientHeight;
 var width = document.body.clientWidth;
@@ -12,12 +13,25 @@ var scale = Math.min(width / 800, height / 600);
 document.body.appendChild(renderer.view);
 
 var stage = new PIXI.Stage;
+
+var levels = {
+	0: require('../levels/level.json'),	
+};
+
 var wintext = new PIXI.Text("Hello World", {
 					font: "100px Arial",
 					fill: 'white',
 				});	;
 var keypressed = false;
+
+loadLevel();
+
 requestAnimationFrame(animate);
+
+function loadLevel() {
+	var world = new World(levels[0]);
+	stage.addChild(world.scene);
+}
 
 function animate() {
 	kd.tick();
