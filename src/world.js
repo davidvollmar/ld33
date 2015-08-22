@@ -1,7 +1,8 @@
 var PIXI = require('pixi.js');
 var Monster = require('./monster');
 var Cell = require('./cell');
-var CellType = require('./CellType.js');
+var CellType = require('./CellType');
+var Wall = require('./wall');
 
 class World {
 	constructor(json) {
@@ -31,7 +32,7 @@ class World {
 			if(this.playingField) {
 				for(var i = def.x; i<def.x + def.width; i++) {
 					for(var j = def.y; j<def.y + def.height; j++) {
-						this.playingField[i][j] = new Cell(CellType.WALL);
+						this.playingField[i][j] = new Wall(1, 1);
 					}
 				}
 			}

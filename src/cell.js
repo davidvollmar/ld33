@@ -2,10 +2,18 @@ var PIXI = require('pixi.js');
 var GameObject = require('./gameobject');
 var CellType = require('./CellType.js');
 
+/**
+ * @abstract
+ */
 class Cell extends GameObject {
 
-
-    constructor(type) {
+    /**
+     * Creates a new cell.
+     * @param type CellType the type of the Cell
+     * @param x int the model coordinates
+     * @param x int the model coordinates
+     */
+    constructor(type, x, y) {
         super();
 
         if(type) {

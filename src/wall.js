@@ -1,24 +1,28 @@
 var PIXI = require('pixi.js');
 var GameObject = require('./gameobject');
+var Cell = require('./cell');
+var CellType = require('./CellType');
 
-var width;
-var height;
-
-class Wall extends GameObject {
-    constructor(width, height) {
-        super();
-        this.wallWidth = width;
-        this.wallHeight = height;
-
-        this.init();
-    }
-
-    init() {
-        this.clear();
-        this.lineStyle(2, 0xFFFFFF, 1);
-        this.beginFill(0xFFFFFF);
-        this.drawRect(this.x, this.y, this.wallWidth, this.wallHeight);
-        this.endFill();
+/**
+ * A cell that can't be walked through.
+ */
+class Wall extends Cell {
+  
+    /**
+     * Creates a new Wall Cell.
+     * This Cell has CellType Wall.
+     */
+    constructor(x, y) {
+        super(CellType.WALL, x, y);
+        
+        // create a texture from an image path
+    		var texture = PIXI.Texture.fromImage("resources/images/wall.png");
+    		var sprite = new PIXI.Sprite(texture);
+    		sprite.width = 100;
+    		sprite.height = 100;
+        // TODO: setting sprite x and y
+        
+    		this.addChild(sprite);
     }
 }
 
