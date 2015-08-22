@@ -4,14 +4,15 @@ var GameObject = require('./gameobject');
 class Monster extends PIXI.Sprite {
 	constructor() {
 		// create a texture from an image path
-		var texture = PIXI.Texture.fromImage("./resources/pacman.png");
+		var texture = PIXI.Texture.fromImage("../resources/pacman.png");
 		super(texture);
 
 		this.init();
 	}
 
 	init() {
-		this.clear();
+		this.width = 100;
+		this.height = 100;
 
 		// center the sprites anchor point
 		this.anchor.x = 100;
