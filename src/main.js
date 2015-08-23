@@ -35,14 +35,14 @@ function loadWorld() {
 var t0 = Date.now();
 
 function frame() {
-    var now = Date.now();
-    var dT = now - t0;
-    t0 = now;
-    //console.log(dT);
+	var now = Date.now();
+	var dt = now - t0;
+	t0 = now;
 
-    network();
+	network();
+	
 	// game loop
-	update();
+	update(dt);
 	renderer.render(stage);
 	requestAnimationFrame(frame);
 }
@@ -58,7 +58,7 @@ function network(){
     }
 }
 
-function update() {
+function update(dt) {
 	kd.tick();
 
 	if(keypressed) {
@@ -66,7 +66,7 @@ function update() {
 	}
 	
 	// updating the world.
-	activeWorld.update();
+	activeWorld.update(dt);
 }
 
 kd.A.down(() => {
