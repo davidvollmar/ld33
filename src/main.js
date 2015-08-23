@@ -14,7 +14,7 @@ const networkListener = new NetworkListener(network);
 
 var renderer = new PIXI.CanvasRenderer(window.innerWidth, window.innerHeight);
 
-document.body.appendChild(renderer.view);
+document.getElementById("canvas-container").appendChild(renderer.view);
 
 var stage = new PIXI.Stage(0xFFFFFF);
 
