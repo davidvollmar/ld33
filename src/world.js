@@ -4,20 +4,21 @@ var Cell = require('./cell');
 var CellType = require('./CellType');
 var Wall = require('./wall');
 var Pacman = require('./pacman.js');
-var PillCell = require('./PillCell');
+var PillCell = require('./pillcell');
+var SemiCell = require('./semicell');
 import {toModelCoordinates, toCanvasCoordinates} from './CoordinatesMapper';
 import {LEFT, RIGHT, UP, DOWN} from './Direction';
 
 export default class World {
-	constructor (json) {
+	constructor(json) {
 		this.json = json;
 		this.modelWidth = this.json.playingField.width;
 		this.modelHeight = this.json.playingField.height;
 
-        this.nrCells = this.modelWidth * this.modelHeight;
-        this.nrWalls = 0;
+		this.nrCells = this.modelWidth * this.modelHeight;
+		this.nrWalls = 0;
 
-        this.playingField = new Array(this.modelWidth);
+		this.playingField = new Array(this.modelWidth);
 		for (var i = 0; i < this.modelWidth; i++) {
 			this.playingField[i] = new Array(this.modelHeight);
 			for (var j = 0; j < this.modelHeight; j++) {
@@ -37,14 +38,25 @@ export default class World {
 			if (this.playingField) {
 				for (var i = def.x; i < def.x + def.width; i++) {
 					for (var j = def.y; j < def.y + def.height; j++) {
-                        this.nrWalls++;
+						this.nrWalls++;
 						this.playingField[i][j] = new Wall(i, j);
 					}
 				}
 			}
 		});
 
-        this.nrPills = this.nrCells - this.nrWalls - 1; //-1 for pacman
+		this.json.semis.map((def) => {
+			if(this.playingField) {
+				for (var i = def.x; i < def.x + def.width; i++) {
+					for (var j = def.y; j < def.y + def.height; j++) {
+						this.nrWalls++;
+						this.playingField[i][j] = new SemiCell(i, j);
+					}
+				}
+			}
+		})
+
+		this.nrPills = this.nrCells - this.nrWalls - 1; //-1 for pacman
 
 		this.pacman = new Pacman();
 		this.pacman.modelx = this.json.pacman.x;
@@ -60,7 +72,7 @@ export default class World {
 		this.entities = this.monsters.concat([this.pacman]);
 	}
 
-	applyToScene (stage) {
+	applyToScene(stage) {
 		var container = new PIXI.DisplayObjectContainer();
 		this.playingField.forEach((row) => {
 			row.forEach((cell) => {
@@ -84,7 +96,7 @@ export default class World {
 	 * Also handles collision.
 	 * @param dt time since last update
 	 */
-	update (dt) {
+	update(dt) {
 		this.entities.forEach((entity) => {
 			// moving the entities
 			var size = toCanvasCoordinates(1, 1);
@@ -120,22 +132,22 @@ export default class World {
 			entity.update(dt);
 			// TODO: handle collisions
 
-            if(this.nrPills == 0) {
-                //TODO handle win
-            }
+			if (this.nrPills == 0) {
+				//TODO handle win
+			}
 		});
 	}
 
 	/**
 	 * Determines whether an entity can move to the given coordinates
 	 */
-	canMove (modelx, modely) {
+	canMove(modelx, modely) {
 		modelx %= 26;
 		modely %= 26;
 		return this.playingField[modelx][modely].cellType !== CellType.WALL;
 	}
 
-	canMoveModel (x, y) {
+	canMoveModel(x, y) {
 		let modelPos = toModelCoordinates(x, y);
 		return this.canMove(modelPos[0], modelPos[1]);
 	}
@@ -146,7 +158,7 @@ export default class World {
  * Moves the entity into the given direction.
  * When he collids with a wall, the entity will not move.
  */
-function moveInDirection (entity, direction, dt, world) {
+function moveInDirection(entity, direction, dt, world) {
 	var size = toCanvasCoordinates(1, 1);
 	var canvasSize = toCanvasCoordinates(world.modelWidth, world.modelHeight);
 

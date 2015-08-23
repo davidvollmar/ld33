@@ -5,7 +5,7 @@ var CellType = require('./CellType');
 import { toModelCoordinates, toCanvasCoordinates } from './CoordinatesMapper';
 
 /**
- * A cell that can't be walked through.
+ * A cell that can be walked through
  */
 class PillCell extends Cell {
 
