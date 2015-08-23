@@ -22,12 +22,13 @@ var activeEntity = null;
 requestAnimationFrame(frame);
 
 function loadWorld() {
+	// setting up the CoordinatesMapper
+	var playField = levels[0].playingField;
+	CoordinatesMapper.init(playField.width, playField.height, renderer);
+	
 	var world = new World(levels[0]);
 	activeWorld = world;
 	stage.addChild(world.scene);
-	
-	// setting up the CoordinatesMapper
-	CoordinatesMapper.init(world.width, world.height, renderer);
 }
 
 function frame() {

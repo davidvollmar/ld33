@@ -2,6 +2,7 @@ var PIXI = require('pixi.js');
 var GameObject = require('./gameobject');
 var Cell = require('./cell');
 var CellType = require('./CellType');
+import { toModelCoordinates, toCanvasCoordinates } from './CoordinatesMapper';
 
 /**
  * A cell that can't be walked through.
@@ -21,7 +22,7 @@ class Wall extends Cell {
     		sprite.width = this.getSpriteWidth();
     		sprite.height = this.getSpriteHeight();
         // TODO: setting sprite x and y
-        	var canvasCoords = this.toCanvasCoordinates(x,y);
+        	var canvasCoords = toCanvasCoordinates(x,y);
 			this.x = canvasCoords[0];
 			this.y = canvasCoords[1];
     		this.addChild(sprite);

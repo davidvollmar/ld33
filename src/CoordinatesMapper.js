@@ -25,14 +25,14 @@ export function init(modelWidth, modelHeight, canvas) {
  */
 export function toModelCoordinates(x, y) {
     return [
-      floor(x / canvas.width * gridWidth),
-      floor(y / canvas.height * gridHeight)
+      floor(x / _canvas.width * _gridWidth),
+      floor(y / _canvas.height * _gridHeight)
     ];
 }
 
 export function toCanvasCoordinates(x, y) {
     return [
-      x / gridWidth * canvas.width,
-      y / gridHeight * canvas.height
+      x / _gridWidth * _canvas.width,
+      y / _gridHeight * _canvas.height
     ];
 }
