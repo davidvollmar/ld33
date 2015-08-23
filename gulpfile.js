@@ -5,6 +5,7 @@ var buffer = require('vinyl-buffer');
 var browserify = require('browserify');
 var watchify = require('watchify');
 var babel = require('babelify');
+var server = require('gulp-server-livereload');
 
 function compile(watch) {
 	// browsifying our code
@@ -12,7 +13,7 @@ function compile(watch) {
 
 	function rebundle() {
 		console.log('-> bundling...');
-		
+
 		bundler.bundle()
 			.on('error', function (err) {
 				console.error(err);
@@ -23,7 +24,7 @@ function compile(watch) {
 			.pipe(sourcemaps.init({loadMaps: true}))
 			.pipe(sourcemaps.write('./'))
 			.pipe(gulp.dest('./public/build'));
-		
+
 		var time = new Date();
 		console.log('done ' + time.toTimeString());
 	}
@@ -34,6 +35,9 @@ function compile(watch) {
 			rebundle();
 		});
 	}
+
+	gulp.src('./index.html')
+		.pipe(gulp.dest('./public/'));
 
 	rebundle();
 }
@@ -46,8 +50,18 @@ gulp.task('watch', function () {
 	return compile(true);
 });
 
+gulp.task('webserver', function () {
+	gulp.src('public')
+		.pipe(server({
+			livereload: true,
+			open: true
+		}));
+});
+
 gulp.task('heroku:production', function(){
   runSeq('build')
 });
+
+gulp.task('dev', ['watch', 'webserver']);
 
 gulp.task('default', ['build']);
