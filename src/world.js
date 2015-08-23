@@ -37,14 +37,14 @@ export default class World {
 			if (this.playingField) {
 				for (var i = def.x; i < def.x + def.width; i++) {
 					for (var j = def.y; j < def.y + def.height; j++) {
-                        this.nrWalls++;
+						this.nrWalls++;
 						this.playingField[i][j] = new Wall(i, j);
 					}
 				}
 			}
 		});
 
-        this.nrPills = this.nrCells - this.nrWalls - 1; //-1 for pacman
+		this.nrPills = this.nrCells - this.nrWalls - 1; //-1 for pacman
 
 		this.pacman = new Pacman();
 		this.pacman.modelx = this.json.pacman.x;
@@ -60,7 +60,8 @@ export default class World {
 		this.entities = this.monsters.concat([this.pacman]);
 	}
 
-	applyToScene (stage) {
+	applyToScene (scene) {
+
 		var container = new PIXI.DisplayObjectContainer();
 		this.playingField.forEach((row) => {
 			row.forEach((cell) => {
@@ -69,13 +70,13 @@ export default class World {
 		});
 
 		container.cacheAsBitmap = true;
-		stage.addChild(container);
+		scene.addChild(container);
 
 		this.monsters.forEach((monster) => {
-			stage.addChild(monster);
+			scene.addChild(monster);
 		});
 
-		stage.addChild(this.pacman);
+		scene.addChild(this.pacman);
 	}
 
 

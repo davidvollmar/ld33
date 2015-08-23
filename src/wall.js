@@ -16,19 +16,18 @@ class Wall extends Cell {
 	constructor (x, y) {
 		super(CellType.WALL, x, y);
 
-		var graphics = new PIXI.Graphics();
-
 		const [spriteSize] = toCanvasCoordinates(1, 1);
-		graphics.beginFill(0xFFFF00);
+		this.beginFill(0xFFFF00);
 		//graphics.lineStyle(5, 0xFF0000);
-		graphics.drawRect(0, 0, spriteSize, spriteSize);
-		graphics.endFill();
+		this.drawRect(0, 0, spriteSize, spriteSize);
+		this.endFill();
+		this.width = spriteSize;
+		this.height = spriteSize;
 
 		// TODO: setting sprite x and y
 		var canvasCoords = toCanvasCoordinates(x, y);
 		this.x = canvasCoords[0];
 		this.y = canvasCoords[1];
-		this.addChild(graphics);
 	}
 
 
