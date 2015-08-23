@@ -112,7 +112,7 @@ export default class World {
 			entity.y += Math.sign(moveY) * Math.min(distY, Math.abs(moveY));
 			
 			// update the animations
-			entity.update();
+			entity.update(dt);
 		});
 	}
 	
