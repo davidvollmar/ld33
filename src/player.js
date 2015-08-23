@@ -5,11 +5,14 @@ export class Player {
 
 	set activeEntityId (id) {
 		if (id < this.entities.length) {
+			this.entities[this.activeEntity] = false;
 			this.activeEntity = id;
+			this.entities[this.activeEntity] = true;
 		} else {
 			throw 'Invalid entity id for player';
 		}
 	}
+
 
 	addEntity (entity) {
 		this.entities.push(entity);
