@@ -11,12 +11,12 @@ class Monster extends Entity {
 
 		this.MINVULNERABLESTATE = 5;
 		this.MAXVULNERABLESTATE = 6;
-		this.addAnimation(Direction.LEFT, ["resources/images/inverted/ghosts_blue_left_1.png", "resources/images/inverted/ghosts_blue_left_2.png"]);
-		this.addAnimation(Direction.RIGHT, ["resources/images/inverted/ghosts_blue_right_1.png", "resources/images/inverted/ghosts_blue_right_2.png"]);
-		this.addAnimation(Direction.UP, ["resources/images/inverted/ghosts_blue_up_1.png", "resources/images/inverted/ghosts_blue_up_2.png"]);
-		this.addAnimation(Direction.DOWN, ["resources/images/inverted/ghosts_blue_down_1.png", "resources/images/inverted/ghosts_blue_down_2.png"]);
-		this.addAnimation(this.MINVULNERABLESTATE, ["resources/images/inverted/ghosts_death_blue_1.png", "resources/images/inverted/ghosts_death_blue_2.png"]);
-		this.addAnimation(this.MAXVULNERABLESTATE, ["resources/images/inverted/ghosts_death_white_1.png", "resources/images/inverted/ghosts_death_white_2.png"]);
+		this.addAnimation(Direction.LEFT, ["ghosts_blue_left_1.png", "ghosts_blue_left_2.png"]);
+		this.addAnimation(Direction.RIGHT, ["ghosts_blue_right_1.png", "ghosts_blue_right_2.png"]);
+		this.addAnimation(Direction.UP, ["ghosts_blue_up_1.png", "ghosts_blue_up_2.png"]);
+		this.addAnimation(Direction.DOWN, ["ghosts_blue_down_1.png", "ghosts_blue_down_2.png"]);
+		this.addAnimation(this.MINVULNERABLESTATE, ["ghosts_death_blue_1.png", "ghosts_death_blue_2.png"]);
+		this.addAnimation(this.MAXVULNERABLESTATE, ["ghosts_death_white_1.png", "ghosts_death_white_2.png"]);
 
 		this.vulnerable = true;
 	}
