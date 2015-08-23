@@ -42,10 +42,10 @@ export default class World {
 		this.pacman.modelx = this.json.pacman.x;
 		this.pacman.modely = this.json.pacman.y;
 		var canvasCoordinates = toCanvasCoordinates(this.json.pacman.x, this.json.pacman.y);
-    this.pacman.x = canvasCoordinates[0];
-    this.pacman.y = canvasCoordinates[1];
+        this.pacman.x = canvasCoordinates[0];
+        this.pacman.y = canvasCoordinates[1];
 
-    this.scene = new PIXI.DisplayObjectContainer();
+        this.scene = new PIXI.DisplayObjectContainer();
 		this.applyToScene(this.scene);
 		
 		// create entities for easy access
@@ -76,6 +76,35 @@ export default class World {
 	update(dt) {
 		this.entities.forEach((entity) => {
 			// moving the entities
+            var size = toCanvasCoordinates(1, 1);
+            if(entity.newDirection) {
+                switch(entity.newDirection) {
+                    case LEFT:
+                        if(this.canMoveModel(entity.x-1, entity.y)) {
+                            entity.direction = entity.newDirection;
+                            entity.newDirection = null;
+                        }
+                        break;
+                    case UP:
+                        if(this.canMoveModel(entity.x, entity.y-1)) {
+                            entity.direction = entity.newDirection;
+                            entity.newDirection = null;
+                        }
+                        break;
+                    case DOWN:
+                        if (this.canMoveModel(entity.x, entity.y + 1 + size[1])) {
+                            entity.direction = entity.newDirection;
+                            entity.newDirection = null;
+                        }
+                        break;
+                    case RIGHT:
+                        if(this.canMoveModel(entity.x + 1 + size[0], entity.y)) {
+                            entity.direction = entity.newDirection;
+                            entity.newDirection = null;
+                        }
+                        break;
+                }
+            }
 			moveInDirection(entity, entity.direction, dt, this);
 			
 			// TODO: handle collisions
@@ -90,9 +119,13 @@ export default class World {
 		modely %= 26;
 		return this.playingField[modelx][modely].cellType !== CellType.WALL;
 	}
-	
 
+    canMoveModel(x, y) {
+        let modelPos = toModelCoordinates(x, y);
+        return this.canMove(modelPos[0], modelPos[1]);
+    }
 }
+
 
 /**
  * Moves the entity into the given direction.
@@ -100,12 +133,16 @@ export default class World {
  */
 function moveInDirection(entity, direction, dt, world) {
 	
+<<<<<<< HEAD
+	// move our entity if possible
+=======
 	function canMoveModel(x, y) {
 		let modelPos = toModelCoordinates(x, y);
 		return world.canMove(modelPos[0], modelPos[1]);
 	}
 	
 	// the size of our entities
+>>>>>>> origin/master
 	var size = toCanvasCoordinates(1, 1);
 	var canvasSize = toCanvasCoordinates(world.modelWidth, world.modelHeight);
 	
@@ -117,6 +154,29 @@ function moveInDirection(entity, direction, dt, world) {
 	// and move them if possible
 	switch(entity.direction) {
 		case LEFT:
+<<<<<<< HEAD
+			if (world.canMoveModel(entity.x - 1, entity.y)) {
+				entity.x--;
+			}
+			break;
+		case RIGHT:
+			if (world.canMoveModel(entity.x + 1 + size[0], entity.y)) {
+				entity.x++;
+			}
+			break;
+		case UP:
+			if (world.canMoveModel(entity.x, entity.y - 1)) {
+				entity.y--;
+			}
+			break;
+		case DOWN:
+			if (world.canMoveModel(entity.x, entity.y + 1 + size[1])) {
+				entity.y++;
+			}
+			break;
+	}
+}
+=======
 			if (canMoveModel(entity.x - distX, entity.y)) {
 				entity.x -= distX;
 			}
@@ -142,4 +202,5 @@ function moveInDirection(entity, direction, dt, world) {
 	entity.x %= canvasSize[0];
 	entity.y %= canvasSize[1];
 };
+>>>>>>> origin/master
 

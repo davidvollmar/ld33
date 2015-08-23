@@ -3,6 +3,7 @@ var kd = require('keydrown');
 var World = require('./world');
 
 import * as CoordinatesMapper from './CoordinatesMapper';
+import {LEFT, UP, RIGHT, DOWN} from './Direction';
 
 import {GameLoop} from './gameloop';
 import {Network, NetworkListener} from './network';
@@ -25,7 +26,8 @@ var keypressed = false;
 
 var activeWorld = null;
 loadWorld();
-var activeEntity = null;
+//TODO dynamic
+var activeEntity = activeWorld.pacman;
 
 function loadWorld () {
 	// setting up the CoordinatesMapper
@@ -44,8 +46,24 @@ networkListener.listen();
 loop.register(update);
 loop.register(()=> {
 	renderer.render(stage);
+<<<<<<< HEAD
+	requestAnimationFrame(frame);
+}
+var socket = io('http://localhost:5000');
+socket.on('connect', function(){});
+socket.on('chat message', function(data){console.log(data);});
+socket.on('event', function(data){});
+socket.on('disconnect', function(){});
+
+function network(){
+    if(keypressed){
+        //socket.emit('chat message','key pressed');
+    }
+}
+=======
 });
 loop.start();
+>>>>>>> origin/master
 
 
 function update (dt) {
@@ -60,23 +78,22 @@ function update (dt) {
 }
 
 kd.A.down(() => {
-	if (activeEntity) {
-		if (canMove(activeEntity.modelx, activeEntity.modely - 1)) {
-			activeEntity.modely--;
-		}//0,0 is topleft
-	}
+    activeEntity.requestNewDirection(LEFT);
 	keypressed = true;
 });
 
 kd.S.down(() => {
-	keypressed = true;
+    activeEntity.requestNewDirection(DOWN);
+    keypressed = true;
 });
 
 kd.D.down(() => {
-	keypressed = true;
+    activeEntity.requestNewDirection(RIGHT);
+    keypressed = true;
 });
 
 kd.W.down(() => {
-	keypressed = false;
+    activeEntity.requestNewDirection(UP);
+    keypressed = true;
 });
 
