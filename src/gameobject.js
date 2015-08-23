@@ -15,6 +15,7 @@ class GameObject extends PIXI.Graphics {
     getSpriteHeight() {
         //return document.body.clientHeight / 29;
         return 900 / 29;
+    }
 }
 
 module.exports = GameObject;
