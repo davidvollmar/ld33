@@ -24,7 +24,8 @@ function compile(watch) {
 			.pipe(sourcemaps.write('./'))
 			.pipe(gulp.dest('./public/build'));
 		
-		console.log('done');
+		var time = new Date();
+		console.log('done ' + time.toTimeString());
 	}
 
 	if (watch) {

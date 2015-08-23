@@ -1,5 +1,6 @@
 var PIXI = require('pixi.js');
 var GameObject = require('./gameobject');
+var Direction = require('./Direction');
 
 class Entity extends GameObject {
     constructor(resource) {
@@ -10,6 +11,8 @@ class Entity extends GameObject {
         sprite.width = this.getSpriteWidth();
         sprite.height = this.getSpriteHeight();
         this.addChild(sprite);
+
+        this.currentDirection = Direction.RIGHT;
     }
 }
 
