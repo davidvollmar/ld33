@@ -82,15 +82,20 @@ function update() {
 
 var toModelCoordinates = function toModelCoordinates(x, y) {
 	return [x / canvasWidth * activeWorld.modelWidth,
-		y / canvasHeight * activeWorld.modelHeight];
-}
+			y / canvasHeight * activeWorld.modelHeight];
+};
 
 var toCanvasCoordinates = function toCanvasCoordinates(x, y) {
 	return [x / activeWorld.modelWidth * canvasWidth,
-		y / activeWorld.modelHeight * canvasHeight];
-}
+			y / activeWorld.modelHeight * canvasHeight];
+};
 
 kd.A.down(() => {
+	if(activeEntity) {
+		if(canMove(activeEntity.modelx, activeEntity.modely-1)) {
+			activeEntity.modely--;
+		}//0,0 is topleft
+	}
 	keypressed = true;
 });
 
@@ -105,3 +110,30 @@ kd.D.down(() => {
 kd.W.down(() => {
 	keypressed = false;
 });
+
+function tryToMove(newModelx, newModely) {
+	var canMove = true;
+
+	if(activeWorld.playingField) {
+		if(activeWorld[newModelx][newModely].cellType == CellType.WALL) {
+			canMove = false;
+		}
+	}
+
+	if(activeWorld.monsters) {
+		activeWorld.monsters.forEach((monster) => {
+
+			if(monster != activeEntity) {
+				if(monster.modelx == newModelx && monster.modely == newModely) {
+					canMove = false;
+					if(activeEntity instanceof Pacman) {
+						//TODO pacman dies
+					}
+				}
+			}
+		});
+	}
+
+
+	return canMove;
+}
