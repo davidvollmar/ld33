@@ -14,7 +14,7 @@ const networkListener = new NetworkListener(network);
 const player = new Player();
 const input = new Input(player);
 
-var renderer = new PIXI.CanvasRenderer(window.innerWidth, window.innerHeight);
+var renderer = new PIXI.autoDetectRenderer(window.innerWidth, window.innerHeight);
 
 document.getElementById("canvas-container").appendChild(renderer.view);
 
