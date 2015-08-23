@@ -156,7 +156,7 @@ export default class World {
 						entity.modelx += newDir[0];
 						entity.modely += newDir[1];
 						entity.direction = entity.newDirection;
-						entity.newDirection = null;
+						entity.clearNewDirection();
 						hasMoved = true; // we have moved now
 					}
 				}

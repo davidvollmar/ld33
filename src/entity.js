@@ -2,6 +2,7 @@ var PIXI = require('pixi.js');
 var GameObject = require('./gameobject');
 var Direction = require('./Direction');
 import { toModelCoordinates, toCanvasCoordinates } from './CoordinatesMapper';
+import {directionGraphics} from './DirectionGraphics';
 
 class Entity extends GameObject {
 	active = false;
@@ -61,7 +62,15 @@ class Entity extends GameObject {
 	}
 
 	requestNewDirection (dir) {
+		this.removeChild(this.directionGraphics);
 		this.newDirection = dir;
+		this.directionGraphics = directionGraphics(dir);
+		this.addChild(this.directionGraphics);
+	}
+	
+	clearNewDirection() {
+		this.newDirection = null;
+		this.removeChild(this.directionGraphics);
 	}
 }
 

@@ -7,37 +7,37 @@ export class Input {
 	}
 
 	listen () {
-		kd.A.down(() => {
+		kd.A.press(() => {
 			this.player.direction = LEFT;
 		});
 
-        kd.LEFT.down(() => {
-            this.player.direction = LEFT;
-        })
+		kd.LEFT.press(() => {
+		    this.player.direction = LEFT;
+		})
 
-		kd.S.down(() => {
+		kd.S.press(() => {
 			this.player.direction = DOWN;
 		});
 
-        kd.DOWN.down(() => {
-            this.player.direction = DOWN;
-        });
+		kd.DOWN.press(() => {
+		    this.player.direction = DOWN;
+		});
 
-		kd.D.down(() => {
+		kd.D.press(() => {
 			this.player.direction = RIGHT;
 		});
 
-        kd.RIGHT.down(() => {
-            this.player.direction = RIGHT;
-        });
+		kd.RIGHT.press(() => {
+		    this.player.direction = RIGHT;
+		});
 
-		kd.W.down(() => {
+		kd.W.press(() => {
 			this.player.direction = UP;
 		});
 
-        kd.UP.down(() => {
-            this.player.direction = UP;
-        })
+		kd.UP.press(() => {
+		    this.player.direction = UP;
+		});
 	}
 
 	tick () {
