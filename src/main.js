@@ -83,12 +83,12 @@ function update() {
 var toModelCoordinates = function toModelCoordinates(x, y) {
 	return [x / canvasWidth * activeWorld.modelWidth,
 		y / canvasHeight * activeWorld.modelHeight];
-}
+};
 
 var toCanvasCoordinates = function toCanvasCoordinates(x, y) {
 	return [x / activeWorld.modelWidth * canvasWidth,
 		y / activeWorld.modelHeight * canvasHeight];
-}
+};
 
 kd.A.down(() => {
 	keypressed = true;
