@@ -10,12 +10,14 @@ export class DirectionGraphics extends Graphics {
 	constructor(rotation, x, y) {
 		super();
 		
+		const triangleScale = .5;
+		
 		this.rotation = rotation;
 		const [cellWidth, cellHeight] = toCanvasCoordinates(1, 1);
-		this.scale = new Point(cellWidth, cellHeight);
+		//this.scale = new Point(triangleScale * cellWidth, triangleScale * cellHeight);
 		this.alpha = .5;
 		this.x = (x + .5) * cellWidth;
-		this.y = (y + .5) * cellHeight
+		this.y = (y + .5) * cellHeight;
 		
 		// drawing the graphics
 		this.beginFill(0x6BF76B);
