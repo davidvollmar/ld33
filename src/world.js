@@ -17,6 +17,7 @@ export default class World {
 
 		this.nrCells = this.modelWidth * this.modelHeight;
 		this.nrWalls = 0;
+		this.nrSemis = 0;
 
 		this.playingField = new Array(this.modelWidth);
 		for (var i = 0; i < this.modelWidth; i++) {
@@ -49,14 +50,14 @@ export default class World {
 			if(this.playingField) {
 				for (var i = def.x; i < def.x + def.width; i++) {
 					for (var j = def.y; j < def.y + def.height; j++) {
-						this.nrWalls++;
+						this.nrSemis++;
 						this.playingField[i][j] = new SemiCell(i, j);
 					}
 				}
 			}
 		})
 
-		this.nrPills = this.nrCells - this.nrWalls - 1; //-1 for pacman
+		this.nrPills = this.nrCells - this.nrWalls - this.nrSemis;
 
 		this.pacman = new Pacman();
 		this.pacman.modelx = this.json.pacman.x;
