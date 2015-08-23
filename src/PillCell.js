@@ -16,23 +16,20 @@ class PillCell extends Cell {
     constructor (x, y) {
         super(CellType.PILL, x, y);
 
-        var graphics = new PIXI.Graphics();
+        this.graphics = new PIXI.Graphics();
 
         const [spriteSize] = toCanvasCoordinates(1, 1);
-        graphics.beginFill(0x0000FF);
+        this.graphics.beginFill(0x0000FF);
         //graphics.lineStyle(5, 0xFF0000);
-        graphics.drawCircle(spriteSize/2, spriteSize/2, spriteSize/6);
-        graphics.endFill();
+        this.graphics.drawCircle(spriteSize/2, spriteSize/2, spriteSize/6);
+        this.graphics.endFill();
 
         // TODO: setting sprite x and y
         var canvasCoords = toCanvasCoordinates(x, y);
         this.x = canvasCoords[0];
         this.y = canvasCoords[1];
-        this.addChild(graphics);
+        this.addChild(this.graphics);
 
-        if(x%2 == 0) {
-            this.eat();
-        }
     }
 
     eat() {
