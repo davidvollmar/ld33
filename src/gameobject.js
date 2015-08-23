@@ -11,14 +11,14 @@ class GameObject extends PIXI.Graphics {
         //return [(x / document.body.clientHeight) * 26,
         //    (y / document.body.clientWidth) * 29];
         return [(x / 900) * 26,
-            (y / 900) * 29];
+            (y / 900) * 26];
     }
 
     toCanvasCoordinates(x, y) {
         //return [(x / 26) * document.body.clientHeight,
         //    (y / 29) * document.body.clientWidth];
         return [(x / 26) * 900,
-            (y / 29) * 900];
+            (y / 26) * 900];
     }
 
     getSpriteWidth() {
@@ -28,7 +28,7 @@ class GameObject extends PIXI.Graphics {
 
     getSpriteHeight() {
         //return document.body.clientHeight / 29;
-        return 900 / 29;
+        return 900 / 26;
     }
 }
 
