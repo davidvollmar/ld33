@@ -97,6 +97,7 @@ function update() {
 						monster.y = 500;
 					}
 				}
+				monster.update(1);
 			});
 		}
 
@@ -114,6 +115,7 @@ function update() {
 			if(activeWorld.pacman.y > 500) {
 				activeWorld.pacman.y = 0;
 			}
+			activeWorld.pacman.update(3);
 		}
 	}
 }
