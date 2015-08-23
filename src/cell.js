@@ -16,24 +16,8 @@ class Cell extends GameObject {
     constructor(type, x, y) {
         super(x, y);
 
-        if(type) {
+        if (type) {
             this.cellType = type;
-        }
-
-        this.init();
-    }
-
-    init() {
-        switch(this.cellType) {
-            case CellType.PILL:
-                //TODO draw pill cell
-                break;
-            case CellType.BONUS:
-                //TODO draw bonus cell
-                break;
-            case CellType.WALL:
-                //TODO draw wall cell
-                break;
         }
     }
 }
