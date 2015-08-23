@@ -1,6 +1,7 @@
 var PIXI = require('pixi.js');
 var kd = require('keydrown');
 var World = require('./world');
+var io = require('socket.io-client');
 import * as CoordinatesMapper from './CoordinatesMapper';
 
 var renderer = new PIXI.CanvasRenderer(window.innerWidth, window.innerHeight);
@@ -31,11 +32,30 @@ function loadWorld() {
 	stage.addChild(world.scene);
 }
 
+var t0 = Date.now();
+
 function frame() {
+    var now = Date.now();
+    var dT = now - t0;
+    t0 = now;
+    //console.log(dT);
+
+    network();
 	// game loop
 	update();
 	renderer.render(stage);
 	requestAnimationFrame(frame);
+}
+var socket = io('http://localhost:5000');
+socket.on('connect', function(){});
+socket.on('chat message', function(data){console.log(data);});
+socket.on('event', function(data){});
+socket.on('disconnect', function(){});
+
+function network(){
+    if(keypressed){
+        socket.emit('chat message','key pressed');
+    }
 }
 
 function update() {
