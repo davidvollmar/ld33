@@ -98,7 +98,7 @@ export default class World {
 	 * Also handles collision.
 	 * @param dt time since last update
 	 */
-	update (dt) {
+	update (dt, ticksPerSecond) {
 		// update the entities
 		this.entities.forEach((entity) => {
 			let cellSize = toCanvasCoordinates(1, 1);
@@ -116,7 +116,7 @@ export default class World {
 			let moveY = targetPos[1] - entity.y;
 			
 			// the distance we can move
-			let distModel = (12 / entity.walkDuration) * dt / 1000;
+			let distModel = (ticksPerSecond / entity.walkDuration) * dt / 1000;
 			let distX = distModel * cellSize[0];
 			let distY = distModel * cellSize[1];
 			
@@ -136,7 +136,7 @@ export default class World {
 	fixedUpdate() {
 		this.entities.forEach((entity) => {
 			
-			if (entity.ticksLeft-- <= 0) { // calculate new direction
+			if (--entity.ticksLeft <= 0) { // calculate new direction
 				
 				// reset ticks left
 				entity.ticksLeft = entity.walkDuration;

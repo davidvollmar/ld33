@@ -8,11 +8,13 @@ import {Network, NetworkListener} from './network';
 import {Input} from './input';
 import {Player} from './player';
 
-const loop = new GameLoop();
+
+const loop = new GameLoop(10);
 const network = new Network();
 const networkListener = new NetworkListener(network);
 const player = new Player();
 const input = new Input(player);
+
 
 var renderer = new PIXI.autoDetectRecommendedRenderer(window.innerWidth, window.innerHeight);
 
@@ -60,7 +62,7 @@ loop.start();
 input.listen();
 
 
-function update (dt) {
+function update (dt, ticksPerSecond) {
 	// updating the world.
-	activeWorld.update(dt);
+	activeWorld.update(dt, ticksPerSecond);
 }

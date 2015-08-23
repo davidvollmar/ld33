@@ -1,14 +1,19 @@
 export class GameLoop {
 	running = false;
 	oldTime = 0;
-	fixedInterval = 1000 / 12;
+	fixedInterval = 1000;
 
 	callbacks = [];
 	fixedCallbacks = [];
 
-	constructor () {
+	/**
+	 * Creates a new GameLoop to register the update methods to.
+	 * @param fixedTicksPerSeconds number of times per second that fixed updates will be called.
+	 */
+	constructor (fixedTicksPerSeconds) {
 		this.frame = this.loop.bind(this);
 		this.fixedUpdateTimer = this.fixedInterval;
+		this.fixedTicksPerSeconds = fixedTicksPerSeconds;
 	}
 
 	register (cb) {
@@ -25,16 +30,16 @@ export class GameLoop {
 		this.oldTime = now;
 
 		for (let callback of this.callbacks) {
-			callback(dt);
+			callback(dt, this.fixedTicksPerSeconds);
 		}
 
 		// handling the fixed update
 		if (this.fixedUpdateTimer <= 0) {
 			// call fixedUpdate and reset timer
 			for (let callback of this.fixedCallbacks) {
-				callback(this.fixedUpdateTimer + this.fixedInterval);
+				callback(this.fixedUpdateTimer + this.fixedInterval, this.fixedTicksPerSeconds);
 			}
-			this.fixedUpdateTimer = this.fixedInterval;
+			this.fixedUpdateTimer = this.fixedInterval / this.fixedTicksPerSeconds;
 		}
 		this.fixedUpdateTimer -= dt;
 
