@@ -14,18 +14,15 @@ export class DirectionGraphics extends Graphics {
 		
 		this.rotation = rotation;
 		const [cellWidth, cellHeight] = toCanvasCoordinates(1, 1);
-		//this.scale = new Point(triangleScale * cellWidth, triangleScale * cellHeight);
-		this.alpha = .5;
+		this.scale = new Point(triangleScale * cellWidth, triangleScale * cellHeight);
+		this.alpha = .7;
 		this.x = (x + .5) * cellWidth;
 		this.y = (y + .5) * cellHeight;
 		
 		// drawing the graphics
 		this.beginFill(0x6BF76B);
-		this.drawPolygon([0, -1/2, 1/6, 1/2, -1/6, 1/2]);
+		this.drawPolygon([0, -1/2, 1/2, 1/2, -1/2, 1/2]);
 		this.endFill();
-		
-		this.width = cellWidth;
-		this.height = cellHeight;
 	}
 }
 
