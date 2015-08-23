@@ -46,6 +46,9 @@ function loadWorld () {
 network.init();
 networkListener.listen();
 
+// counter for the fixed update
+var fixedUpdateTimer = 0;
+
 loop.register(update);
 loop.register(input.tick);
 loop.register(()=> {
@@ -54,10 +57,19 @@ loop.register(()=> {
 loop.start();
 input.listen();
 
+
 function update (dt) {
 	if (keypressed) {
 		//TODO do things
 	}
+	
+	// handling the fixed update
+	if (fixedUpdateTimer <= 0) {
+		// call fixedUpdate and reset timer
+		activeWorld.fixedUpdate();
+		fixedUpdateTimer = 1000;
+	}
+	fixedUpdateTimer -= dt;
 
 	// updating the world.
 	activeWorld.update(dt);
