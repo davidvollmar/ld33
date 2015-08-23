@@ -3,6 +3,7 @@ var kd = require('keydrown');
 var World = require('./world');
 var io = require('socket.io-client');
 import * as CoordinatesMapper from './CoordinatesMapper';
+import {LEFT, UP, RIGHT, DOWN} from './Direction';
 
 var renderer = new PIXI.CanvasRenderer(window.innerWidth, window.innerHeight);
 
@@ -18,7 +19,8 @@ var keypressed = false;
 
 var activeWorld = null;
 loadWorld();
-var activeEntity = null;
+//TODO dynamic
+var activeEntity = activeWorld.pacman;
 
 requestAnimationFrame(frame);
 
@@ -54,7 +56,7 @@ socket.on('disconnect', function(){});
 
 function network(){
     if(keypressed){
-        socket.emit('chat message','key pressed');
+        //socket.emit('chat message','key pressed');
     }
 }
 
@@ -70,23 +72,22 @@ function update() {
 }
 
 kd.A.down(() => {
-	if(activeEntity) {
-		if(canMove(activeEntity.modelx, activeEntity.modely-1)) {
-			activeEntity.modely--;
-		}//0,0 is topleft
-	}
+    activeEntity.requestNewDirection(LEFT);
 	keypressed = true;
 });
 
 kd.S.down(() => {
-	keypressed = true;
+    activeEntity.requestNewDirection(DOWN);
+    keypressed = true;
 });
 
 kd.D.down(() => {
-	keypressed = true;
+    activeEntity.requestNewDirection(RIGHT);
+    keypressed = true;
 });
 
 kd.W.down(() => {
-	keypressed = false;
+    activeEntity.requestNewDirection(UP);
+    keypressed = true;
 });
 
