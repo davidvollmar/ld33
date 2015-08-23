@@ -72,7 +72,8 @@ export default class World {
 		this.entities = this.monsters.concat([this.pacman]);
 	}
 
-	applyToScene(stage) {
+	applyToScene (scene) {
+
 		var container = new PIXI.DisplayObjectContainer();
 		this.playingField.forEach((row) => {
 			row.forEach((cell) => {
@@ -81,13 +82,13 @@ export default class World {
 		});
 
 		container.cacheAsBitmap = true;
-		stage.addChild(container);
+		scene.addChild(container);
 
 		this.monsters.forEach((monster) => {
-			stage.addChild(monster);
+			scene.addChild(monster);
 		});
 
-		stage.addChild(this.pacman);
+		scene.addChild(this.pacman);
 	}
 
 
@@ -96,41 +97,82 @@ export default class World {
 	 * Also handles collision.
 	 * @param dt time since last update
 	 */
-	update(dt) {
+	update (dt) {
+		// update the entities
 		this.entities.forEach((entity) => {
-			// moving the entities
-			var size = toCanvasCoordinates(1, 1);
-			if (entity.newDirection) {
-				switch (entity.newDirection) {
-					case LEFT:
-						if (this.canMoveModel(entity.x - 1, entity.y)) {
-							entity.direction = entity.newDirection;
-							entity.newDirection = null;
-						}
-						break;
-					case UP:
-						if (this.canMoveModel(entity.x, entity.y - 1)) {
-							entity.direction = entity.newDirection;
-							entity.newDirection = null;
-						}
-						break;
-					case DOWN:
-						if (this.canMoveModel(entity.x, entity.y + 1 + size[1])) {
-							entity.direction = entity.newDirection;
-							entity.newDirection = null;
-						}
-						break;
-					case RIGHT:
-						if (this.canMoveModel(entity.x + 1 + size[0], entity.y)) {
-							entity.direction = entity.newDirection;
-							entity.newDirection = null;
-						}
-						break;
+			let cellSize = toCanvasCoordinates(1, 1);
+			
+			// update x and y when walking of the screen
+			const canvasWidth = cellSize[0] * this.modelWidth;
+			const canvasHeight = cellSize[1] * this.modelHeight;
+			entity.x = (entity.x + cellSize[0] / 2 + canvasWidth) % canvasWidth - cellSize[0] / 2;
+			entity.y = (entity.y + cellSize[1] / 2 + canvasWidth) % canvasWidth - cellSize[0] / 2;
+			
+			// move to the target positions
+			let targetPos = toCanvasCoordinates(entity.modelx, entity.modely);
+			// how much left to move
+			let moveX = targetPos[0] - entity.x;
+			let moveY = targetPos[1] - entity.y;
+			
+			// the distance we can move
+			let distModel = (12 / entity.walkDuration) * dt / 1000;
+			let distX = distModel * cellSize[0];
+			let distY = distModel * cellSize[1];
+			
+			// and updating the entities
+			entity.x += Math.sign(moveX) * Math.min(distX, Math.abs(moveX));
+			entity.y += Math.sign(moveY) * Math.min(distY, Math.abs(moveY));
+			
+			// update the animations
+			entity.update(dt);
+		});
+	}
+	
+	/**
+	 * Update functional that will be called on a fixed rate.
+	 * To keep it consistent with update, this should be called each second on average.
+	 */
+	fixedUpdate() {
+		this.entities.forEach((entity) => {
+			
+			if (entity.ticksLeft-- <= 0) { // calculate new direction
+				
+				// reset ticks left
+				entity.ticksLeft = entity.walkDuration;
+				
+				// whether we did a move already
+				let hasMoved = false;
+				
+				// fix the modelx and modely for when we are out of screen
+				entity.modelx = (entity.modelx + this.modelWidth) % this.modelWidth;
+				entity.modely = (entity.modely + this.modelHeight) % this.modelHeight;
+				
+				// check if we can move into the desired location
+				if (entity.newDirection) {
+					let newDir = dirToCoord(entity.newDirection);
+					if (this.canMove(entity.modelx + newDir[0], entity.modely + newDir[1])) {
+						// we can move to here
+						entity.modelx += newDir[0];
+						entity.modely += newDir[1];
+						entity.direction = entity.newDirection;
+						entity.newDirection = null;
+						hasMoved = true; // we have moved now
+					}
+				}
+				
+				// handle old direction
+				if (!hasMoved) {
+					// we did not went into new Direction
+					// continue with old Direction
+					let oldDir = dirToCoord(entity.direction);
+					if (this.canMove(entity.modelx + oldDir[0], entity.modely + oldDir[1])) {
+						// we can keep moving
+						entity.modelx += oldDir[0];
+						entity.modely += oldDir[1];
+						return; // to keep the code kind of symmetric
+					}
 				}
 			}
-			moveInDirection(entity, entity.direction, dt, this);
-			entity.update(dt);
-			// TODO: handle collisions
 
 			if (this.nrPills == 0) {
 				//TODO handle win
@@ -141,23 +183,25 @@ export default class World {
 	/**
 	 * Determines whether an entity can move to the given coordinates
 	 */
-	canMove(modelx, modely) {
-		modelx %= 26;
-		modely %= 26;
+	canMove (modelx, modely) {
+		modelx = (modelx + this.modelWidth) % this.modelWidth;
+		modely = (modely + this.modelHeight) % this.modelHeight;
 		return this.playingField[modelx][modely].cellType !== CellType.WALL;
-	}
-
-	canMoveModel(x, y) {
-		let modelPos = toModelCoordinates(x, y);
-		return this.canMove(modelPos[0], modelPos[1]);
 	}
 }
 
-
 /**
- * Moves the entity into the given direction.
- * When he collids with a wall, the entity will not move.
+ * Calculates the coordinates that goes into that direction
  */
+function dirToCoord(direction) {
+	switch(direction) {
+		case LEFT: return [-1, 0];
+		case RIGHT: return [1, 0];
+		case UP: return [0, -1];
+		case DOWN: return [0, 1];
+	}
+}
+
 function moveInDirection(entity, direction, dt, world) {
 	var size = toCanvasCoordinates(1, 1);
 	var canvasSize = toCanvasCoordinates(world.modelWidth, world.modelHeight);
@@ -190,9 +234,4 @@ function moveInDirection(entity, direction, dt, world) {
 			}
 			break;
 	}
-
-	// setting back if the entity goes off the screen
-	entity.x %= canvasSize[0];
-	entity.y %= canvasSize[1];
 }
-
