@@ -4,7 +4,8 @@ var World = require('./world');
 
 //var canvasHeight = document.body.clientHeight; //this does not work in chrome apparently
 var canvasHeight = 900;
-var canvasWidth = document.body.clientWidth;
+//var canvasWidth = document.body.clientWidth;*/
+var canvasWidth = 900;
 var renderer = new PIXI.CanvasRenderer(canvasWidth, canvasHeight);
 
 document.body.appendChild(renderer.view);
@@ -67,12 +68,12 @@ function animate() {
 	requestAnimationFrame(animate);
 }
 
-function toModelCoordinates(x, y) {
+var toModelCoordinates = function toModelCoordinates(x, y) {
 	return [x / canvasWidth * activeWorld.modelWidth,
 		y / canvasHeight * activeWorld.modelHeight];
 }
 
-function toCanvasCoordinates(x, y) {
+var toCanvasCoordinates = function toCanvasCoordinates(x, y) {
 	return [x / activeWorld.modelWidth * canvasWidth,
 		y / activeWorld.modelHeight * canvasHeight];
 }
@@ -84,5 +85,3 @@ kd.Q.down(() => {
 kd.W.down(() => {
 	keypressed = false;
 });
-
-
