@@ -107,6 +107,7 @@ function moveInDirection(entity, direction, dt, world) {
 	
 	// the size of our entities
 	var size = toCanvasCoordinates(1, 1);
+	var canvasSize = toCanvasCoordinates(world.modelWidth, world.modelHeight);
 	
 	// the distance will by speed * cell height and weight per second
 	let dist = dt / 1000 * entity.speed;
@@ -136,5 +137,9 @@ function moveInDirection(entity, direction, dt, world) {
 			}
 			break;
 	}
+	
+	// setting back if the entity goes off the screen
+	entity.x %= canvasSize[0];
+	entity.y %= canvasSize[1];
 };
 
