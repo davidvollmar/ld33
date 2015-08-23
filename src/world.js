@@ -107,7 +107,7 @@ export default class World {
 				}
 			}
 			moveInDirection(entity, entity.direction, dt, this);
-
+			entity.update();
 			// TODO: handle collisions
 		});
 	}
