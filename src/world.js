@@ -167,5 +167,5 @@ function moveInDirection(entity, direction, dt, world) {
 	// setting back if the entity goes off the screen
 	entity.x %= canvasSize[0];
 	entity.y %= canvasSize[1];
-};
+}
 
