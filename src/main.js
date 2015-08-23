@@ -33,7 +33,7 @@ function loadWorld () {
 	CoordinatesMapper.init(playField.width, playField.height, renderer);
 
 	var world = new World(levels[0]);
-	networkListener
+	networkListener.world = world;
 	activeWorld = world;
 	stage.addChild(world.scene);
 }
