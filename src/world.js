@@ -151,7 +151,7 @@ export default class World {
 				// check if we can move into the desired location
 				if (entity.newDirection) {
 					let newDir = dirToCoord(entity.newDirection);
-					if (this.canMove(entity.modelx + newDir[0], entity.modely + newDir[1])) {
+					if (this.canMove(entity, entity.modelx + newDir[0], entity.modely + newDir[1])) {
 						// we can move to here
 						entity.modelx += newDir[0];
 						entity.modely += newDir[1];
@@ -166,7 +166,7 @@ export default class World {
 					// we did not went into new Direction
 					// continue with old Direction
 					let oldDir = dirToCoord(entity.direction);
-					if (this.canMove(entity.modelx + oldDir[0], entity.modely + oldDir[1])) {
+					if (this.canMove(entity, entity.modelx + oldDir[0], entity.modely + oldDir[1])) {
 						// we can keep moving
 						entity.modelx += oldDir[0];
 						entity.modely += oldDir[1];
@@ -184,11 +184,19 @@ export default class World {
 	/**
 	 * Determines whether an entity can move to the given coordinates
 	 */
-	canMove (modelx, modely) {
+	canMove (entity, modelx, modely) {
 		modelx = (modelx + this.modelWidth) % this.modelWidth;
 		modely = (modely + this.modelHeight) % this.modelHeight;
-		return this.playingField[modelx][modely].cellType !== CellType.WALL;
+
+		if (entity instanceof Pacman) {
+			var cellType = this.playingField[modelx][modely].cellType;
+			return !(cellType == CellType.WALL || cellType == CellType.SEMI);
+		}
+		if (entity instanceof Monster) {
+			return this.playingField[modelx][modely].cellType !== CellType.WALL;
+		}
 	}
+
 }
 
 /**
