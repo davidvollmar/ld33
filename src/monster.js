@@ -1,6 +1,6 @@
 var PIXI = require('pixi.js');
 var GameObject = require('./gameobject');
-var Entity = require('./entity1');
+var Entity = require('./entity');
 
 class Monster extends Entity {
 	constructor() {
