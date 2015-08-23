@@ -17,7 +17,10 @@ class Entity extends GameObject {
 		this.addChild(this.sprite);
 
 		this.direction = Direction.RIGHT;
-		this.speed = 4;
+		
+		// how many ticks it takes to walk one cell
+		this.walkDuration = 4;
+		this.ticksLeft = 0;
 	}
 
 	update (resource) {

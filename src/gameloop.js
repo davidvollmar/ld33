@@ -1,7 +1,7 @@
 export class GameLoop {
 	running = false;
 	oldTime = 0;
-	fixedInterval = 1000;
+	fixedInterval = 1000 / 12;
 
 	callbacks = [];
 	fixedCallbacks = [];

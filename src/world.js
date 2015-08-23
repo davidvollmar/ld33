@@ -88,7 +88,7 @@ export default class World {
 			let moveY = targetPos[1] - entity.y;
 			
 			// the distance we can move
-			let distModel = dt / 1000;
+			let distModel = (12 / entity.walkDuration) * dt / 1000;
 			let distX = distModel * cellSize[0];
 			let distY = distModel * cellSize[1];
 			
@@ -107,27 +107,34 @@ export default class World {
 	 */
 	fixedUpdate() {
 		this.entities.forEach((entity) => {
-			// check if we can move into the desired location
-			if (entity.newDirection) {
-				let newDir = dirToCoord(entity.newDirection);
-				if (this.canMove(entity.modelx + newDir[0], entity.modely + newDir[1])) {
-					// we can move to here
-					entity.modelx += newDir[0];
-					entity.modely += newDir[1];
-					entity.direction = entity.newDirection;
-					entity.newDirection = null;
-					return; // skip the rest
-				}
-			}
 			
-			// we did not went into new Direction
-			// continue with old Direction
-			let oldDir = dirToCoord(entity.direction);
-			if (this.canMove(entity.modelx + oldDir[0], entity.modely + oldDir[1])) {
-				// we can keep moving
-				entity.modelx += oldDir[0];
-				entity.modely += oldDir[1];
-				return; // to keep the code kind of symmetric
+			if (entity.ticksLeft-- <= 0) { // calculate new direction
+				
+				// reset ticks left
+				entity.ticksLeft = entity.walkDuration;
+				
+				// check if we can move into the desired location
+				if (entity.newDirection) {
+					let newDir = dirToCoord(entity.newDirection);
+					if (this.canMove(entity.modelx + newDir[0], entity.modely + newDir[1])) {
+						// we can move to here
+						entity.modelx += newDir[0];
+						entity.modely += newDir[1];
+						entity.direction = entity.newDirection;
+						entity.newDirection = null;
+						return; // skip the rest
+					}
+				}
+				
+				// we did not went into new Direction
+				// continue with old Direction
+				let oldDir = dirToCoord(entity.direction);
+				if (this.canMove(entity.modelx + oldDir[0], entity.modely + oldDir[1])) {
+					// we can keep moving
+					entity.modelx += oldDir[0];
+					entity.modely += oldDir[1];
+					return; // to keep the code kind of symmetric
+				}
 			}
 		});
 	}
