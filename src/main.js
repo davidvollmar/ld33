@@ -54,6 +54,10 @@ loop.register(input.tick);
 loop.register(()=> {
 	renderer.render(stage);
 });
+loop.registerFixed(()=>{
+	activeWorld.fixedUpdate();
+});
+
 loop.start();
 input.listen();
 
@@ -62,14 +66,6 @@ function update (dt) {
 	if (keypressed) {
 		//TODO do things
 	}
-	
-	// handling the fixed update
-	if (fixedUpdateTimer <= 0) {
-		// call fixedUpdate and reset timer
-		activeWorld.fixedUpdate();
-		fixedUpdateTimer = 1000;
-	}
-	fixedUpdateTimer -= dt;
 
 	// updating the world.
 	activeWorld.update(dt);
