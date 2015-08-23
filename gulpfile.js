@@ -7,11 +7,11 @@ var watchify = require('watchify');
 var babel = require('babelify');
 var server = require('gulp-server-livereload');
 
-function compile(watch) {
+function compile (watch) {
 	// browsifying our code
-	var bundler = browserify('./src/main.js', {debug: true}).transform(babel);
+	var bundler = browserify('./src/main.js', {debug: true}).transform(babel, {stage: 0});
 
-	function rebundle() {
+	function rebundle () {
 		console.log('-> bundling...');
 
 		bundler.bundle()
@@ -53,14 +53,17 @@ gulp.task('watch', function () {
 gulp.task('webserver', function () {
 	gulp.src('public')
 		.pipe(server({
-			livereload: true,
 			open: true,
-			port: process.env.PORT || 8000
+			port: process.env.PORT || 8000,
+			livereload: {
+				enable: true,
+				port: 1 + parseInt(process.env.PORT, 10) || 8001
+			}
 		}));
 });
 
-gulp.task('heroku:production', function(){
-  runSeq('build')
+gulp.task('heroku:production', function () {
+	runSeq('build')
 });
 
 gulp.task('dev', ['watch', 'webserver']);

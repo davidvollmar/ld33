@@ -71,8 +71,9 @@ export default class World {
 	/**
 	 * Updates the entities of the world to their new location.
 	 * Also handles collision.
+	 * @param dt time since last update
 	 */
-	update() {
+	update(dt) {
 		this.entities.forEach((entity) => {
 			// moving the entities
             var size = toCanvasCoordinates(1, 1);
@@ -104,7 +105,7 @@ export default class World {
                         break;
                 }
             }
-			moveInDirection(entity, entity.direction, this);
+			moveInDirection(entity, entity.direction, dt, this);
 			
 			// TODO: handle collisions
 		});
@@ -130,12 +131,30 @@ export default class World {
  * Moves the entity into the given direction.
  * When he collids with a wall, the entity will not move.
  */
-function moveInDirection(entity, direction, world) {
+function moveInDirection(entity, direction, dt, world) {
 	
+<<<<<<< HEAD
 	// move our entity if possible
+=======
+	function canMoveModel(x, y) {
+		let modelPos = toModelCoordinates(x, y);
+		return world.canMove(modelPos[0], modelPos[1]);
+	}
+	
+	// the size of our entities
+>>>>>>> origin/master
 	var size = toCanvasCoordinates(1, 1);
+	var canvasSize = toCanvasCoordinates(world.modelWidth, world.modelHeight);
+	
+	// the distance will by speed * cell height and weight per second
+	let dist = dt / 1000 * entity.speed;
+	let distX = dist * size[0];
+	let distY = dist * size[1];
+	
+	// and move them if possible
 	switch(entity.direction) {
 		case LEFT:
+<<<<<<< HEAD
 			if (world.canMoveModel(entity.x - 1, entity.y)) {
 				entity.x--;
 			}
@@ -157,4 +176,31 @@ function moveInDirection(entity, direction, world) {
 			break;
 	}
 }
+=======
+			if (canMoveModel(entity.x - distX, entity.y)) {
+				entity.x -= distX;
+			}
+			break;
+		case RIGHT:
+			if (canMoveModel(entity.x + distX + size[0], entity.y)) {
+				entity.x += distX;
+			}
+			break;
+		case UP:
+			if (canMoveModel(entity.x, entity.y - distY)) {
+				entity.y -= distY;
+			}
+			break;
+		case DOWN:
+			if (canMoveModel(entity.x, entity.y + distY + size[1])) {
+				entity.y += distY;
+			}
+			break;
+	}
+	
+	// setting back if the entity goes off the screen
+	entity.x %= canvasSize[0];
+	entity.y %= canvasSize[1];
+};
+>>>>>>> origin/master
 

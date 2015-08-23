@@ -1,9 +1,16 @@
 var PIXI = require('pixi.js');
 var kd = require('keydrown');
 var World = require('./world');
-var io = require('socket.io-client');
+
 import * as CoordinatesMapper from './CoordinatesMapper';
 import {LEFT, UP, RIGHT, DOWN} from './Direction';
+
+import {GameLoop} from './gameloop';
+import {Network, NetworkListener} from './network';
+
+const loop = new GameLoop();
+const network = new Network();
+const networkListener = new NetworkListener(network);
 
 var renderer = new PIXI.CanvasRenderer(window.innerWidth, window.innerHeight);
 
@@ -22,30 +29,24 @@ loadWorld();
 //TODO dynamic
 var activeEntity = activeWorld.pacman;
 
-requestAnimationFrame(frame);
-
-function loadWorld() {
+function loadWorld () {
 	// setting up the CoordinatesMapper
 	var playField = levels[0].playingField;
 	CoordinatesMapper.init(playField.width, playField.height, renderer);
-	
+
 	var world = new World(levels[0]);
+	networkListener.world = world;
 	activeWorld = world;
 	stage.addChild(world.scene);
 }
 
-var t0 = Date.now();
+network.init();
+networkListener.listen();
 
-function frame() {
-    var now = Date.now();
-    var dT = now - t0;
-    t0 = now;
-    //console.log(dT);
-
-    network();
-	// game loop
-	update();
+loop.register(update);
+loop.register(()=> {
 	renderer.render(stage);
+<<<<<<< HEAD
 	requestAnimationFrame(frame);
 }
 var socket = io('http://localhost:5000');
@@ -59,16 +60,21 @@ function network(){
         //socket.emit('chat message','key pressed');
     }
 }
+=======
+});
+loop.start();
+>>>>>>> origin/master
 
-function update() {
+
+function update (dt) {
 	kd.tick();
 
-	if(keypressed) {
+	if (keypressed) {
 		//TODO do things
 	}
-	
+
 	// updating the world.
-	activeWorld.update();
+	activeWorld.update(dt);
 }
 
 kd.A.down(() => {
