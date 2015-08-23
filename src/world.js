@@ -4,6 +4,7 @@ var Cell = require('./cell');
 var CellType = require('./CellType');
 var Wall = require('./wall');
 var Pacman = require('./pacman.js');
+import { toModelCoordinates, toCanvasCoordinates } from './CoordinatesMapper';
 
 class World {
 	constructor(json) {
@@ -21,8 +22,8 @@ class World {
 
 		this.monsters = this.json.monsters.map((def) => {
 			var monster = new Monster();
-			monster.x = def.x;
-			monster.y = def.y;
+			monster.modelx = def.x;
+			monster.modely = def.y;
 			return monster;
 		});
 
@@ -37,11 +38,13 @@ class World {
 		});
 
 		this.pacman = new Pacman();
-		this.pacman.x = this.json.pacman.x;
-		this.pacman.y = this.json.pacman.y;
+		this.pacman.modelx = this.json.pacman.x;
+		this.pacman.modely = this.json.pacman.y;
+        var canvasCoordinates = toCanvasCoordinates(this.json.pacman.x, this.json.pacman.y);
+        this.pacman.x = canvasCoordinates[0];
+        this.pacman.y = canvasCoordinates[1];
 
-
-		this.scene = new PIXI.DisplayObjectContainer();
+        this.scene = new PIXI.DisplayObjectContainer();
 		this.applyToScene(this.scene);
 	}
 	
