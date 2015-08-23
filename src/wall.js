@@ -16,17 +16,19 @@ class Wall extends Cell {
 	constructor (x, y) {
 		super(CellType.WALL, x, y);
 
-		// create a texture from an image path
-		var texture = this.loadTexture("resources/images/inverted/wall.png");
-		var sprite = new PIXI.Sprite(texture);
-		var spriteSize = toCanvasCoordinates(1, 1);
-		sprite.width = spriteSize[0];
-		sprite.height = spriteSize[0];
+		var graphics = new PIXI.Graphics();
+
+		const [spriteSize] = toCanvasCoordinates(1, 1);
+		graphics.beginFill(0xFFFF00);
+		//graphics.lineStyle(5, 0xFF0000);
+		graphics.drawRect(0, 0, spriteSize, spriteSize);
+		graphics.endFill();
+
 		// TODO: setting sprite x and y
 		var canvasCoords = toCanvasCoordinates(x, y);
 		this.x = canvasCoords[0];
 		this.y = canvasCoords[1];
-		this.addChild(sprite);
+		this.addChild(graphics);
 	}
 
 

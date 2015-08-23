@@ -59,6 +59,8 @@ export default class World {
 				container.addChild(cell);
 			});
 		});
+
+		container.cacheAsBitmap = true;
 		stage.addChild(container);
 
 		this.monsters.forEach((monster) => {
