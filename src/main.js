@@ -1,12 +1,9 @@
 var PIXI = require('pixi.js');
 var kd = require('keydrown');
 var World = require('./world');
+import * as CoordinatesMapper from './CoordinatesMapper';
 
-//var canvasHeight = document.body.clientHeight; //this does not work in chrome apparently
-var canvasHeight = 900;
-//var canvasWidth = document.body.clientWidth;*/
-var canvasWidth = 900;
-var renderer = new PIXI.CanvasRenderer(canvasWidth, canvasHeight);
+var renderer = new PIXI.CanvasRenderer(window.innerWidth, window.innerHeight);
 
 document.body.appendChild(renderer.view);
 
@@ -28,6 +25,9 @@ function loadWorld() {
 	var world = new World(levels[0]);
 	activeWorld = world;
 	stage.addChild(world.scene);
+	
+	// setting up the CoordinatesMapper
+	CoordinatesMapper.init(world.width, world.height, renderer);
 }
 
 function frame() {
@@ -49,7 +49,7 @@ function update() {
 			activeWorld.monsters.forEach((monster) => {
 				//TODO alter model coordinate depending on direction
 				if(false) {//TODO if keypress or monster moved to another cell, update model
-					var newCoords = toCanvasCoordinates(monster.modelx - 1, monster.modely);
+					var newCoords = CoordinatesMapper.toCanvasCoordinates(monster.modelx - 1, monster.modely);
 					monster.x = newCoords[0];
 					monster.y = newCoords[1];
 				} else {
@@ -78,16 +78,6 @@ function update() {
 			}
 		}
 	}
-}
-
-var toModelCoordinates = function toModelCoordinates(x, y) {
-	return [x / canvasWidth * activeWorld.modelWidth,
-		y / canvasHeight * activeWorld.modelHeight];
-}
-
-var toCanvasCoordinates = function toCanvasCoordinates(x, y) {
-	return [x / activeWorld.modelWidth * canvasWidth,
-		y / activeWorld.modelHeight * canvasHeight];
 }
 
 kd.A.down(() => {
