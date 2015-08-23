@@ -132,17 +132,6 @@ export default class World {
  * When he collids with a wall, the entity will not move.
  */
 function moveInDirection(entity, direction, dt, world) {
-	
-<<<<<<< HEAD
-	// move our entity if possible
-=======
-	function canMoveModel(x, y) {
-		let modelPos = toModelCoordinates(x, y);
-		return world.canMove(modelPos[0], modelPos[1]);
-	}
-	
-	// the size of our entities
->>>>>>> origin/master
 	var size = toCanvasCoordinates(1, 1);
 	var canvasSize = toCanvasCoordinates(world.modelWidth, world.modelHeight);
 	
@@ -154,7 +143,6 @@ function moveInDirection(entity, direction, dt, world) {
 	// and move them if possible
 	switch(entity.direction) {
 		case LEFT:
-<<<<<<< HEAD
 			if (world.canMoveModel(entity.x - 1, entity.y)) {
 				entity.x--;
 			}
@@ -175,32 +163,9 @@ function moveInDirection(entity, direction, dt, world) {
 			}
 			break;
 	}
-}
-=======
-			if (canMoveModel(entity.x - distX, entity.y)) {
-				entity.x -= distX;
-			}
-			break;
-		case RIGHT:
-			if (canMoveModel(entity.x + distX + size[0], entity.y)) {
-				entity.x += distX;
-			}
-			break;
-		case UP:
-			if (canMoveModel(entity.x, entity.y - distY)) {
-				entity.y -= distY;
-			}
-			break;
-		case DOWN:
-			if (canMoveModel(entity.x, entity.y + distY + size[1])) {
-				entity.y += distY;
-			}
-			break;
-	}
 	
 	// setting back if the entity goes off the screen
 	entity.x %= canvasSize[0];
 	entity.y %= canvasSize[1];
 };
->>>>>>> origin/master
 

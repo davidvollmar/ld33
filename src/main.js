@@ -1,16 +1,18 @@
 var PIXI = require('pixi.js');
-var kd = require('keydrown');
 var World = require('./world');
 
 import * as CoordinatesMapper from './CoordinatesMapper';
-import {LEFT, UP, RIGHT, DOWN} from './Direction';
 
 import {GameLoop} from './gameloop';
 import {Network, NetworkListener} from './network';
+import {Input} from './input';
+import {Player} from './player';
 
 const loop = new GameLoop();
 const network = new Network();
 const networkListener = new NetworkListener(network);
+const player = new Player();
+const input = new Input(player);
 
 var renderer = new PIXI.CanvasRenderer(window.innerWidth, window.innerHeight);
 
@@ -26,8 +28,9 @@ var keypressed = false;
 
 var activeWorld = null;
 loadWorld();
-//TODO dynamic
-var activeEntity = activeWorld.pacman;
+
+player.addEntity(activeWorld.pacman);
+player.activeEntityId = 0;
 
 function loadWorld () {
 	// setting up the CoordinatesMapper
@@ -44,31 +47,14 @@ network.init();
 networkListener.listen();
 
 loop.register(update);
+loop.register(input.tick);
 loop.register(()=> {
 	renderer.render(stage);
-<<<<<<< HEAD
-	requestAnimationFrame(frame);
-}
-var socket = io('http://localhost:5000');
-socket.on('connect', function(){});
-socket.on('chat message', function(data){console.log(data);});
-socket.on('event', function(data){});
-socket.on('disconnect', function(){});
-
-function network(){
-    if(keypressed){
-        //socket.emit('chat message','key pressed');
-    }
-}
-=======
 });
 loop.start();
->>>>>>> origin/master
-
+input.listen();
 
 function update (dt) {
-	kd.tick();
-
 	if (keypressed) {
 		//TODO do things
 	}
@@ -76,24 +62,3 @@ function update (dt) {
 	// updating the world.
 	activeWorld.update(dt);
 }
-
-kd.A.down(() => {
-    activeEntity.requestNewDirection(LEFT);
-	keypressed = true;
-});
-
-kd.S.down(() => {
-    activeEntity.requestNewDirection(DOWN);
-    keypressed = true;
-});
-
-kd.D.down(() => {
-    activeEntity.requestNewDirection(RIGHT);
-    keypressed = true;
-});
-
-kd.W.down(() => {
-    activeEntity.requestNewDirection(UP);
-    keypressed = true;
-});
-
