@@ -84,6 +84,7 @@ function update() {
 						monster.y = 500;
 					}
 				}
+				monster.update(1);
 			});
 		}
 
