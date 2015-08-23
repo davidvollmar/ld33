@@ -71,7 +71,9 @@ function update() {
 		if(activeWorld.pacman) {
 			activeWorld.pacman.x = activeWorld.pacman.x + 1;
 			activeWorld.pacman.y = activeWorld.pacman.y + 1;
-			if(activeWorld.pacman.x > 500) {
+
+
+            if(activeWorld.pacman.x > 500) {
 				activeWorld.pacman.x = 0;
 			}
 			if(activeWorld.pacman.y > 500) {

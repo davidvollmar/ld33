@@ -16,6 +16,7 @@ class GameObject extends PIXI.Graphics {
         //return document.body.clientHeight / 29;
         return 900 / 26;
     }
+
 }
 
 module.exports = GameObject;

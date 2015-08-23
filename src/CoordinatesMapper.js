@@ -7,6 +7,7 @@
 var _canvas = document.getElementById('mycanvas');
 var _gridWidth;
 var _gridHeight;
+var _factor;//for square
 
 /**
  * Initializes the CoordinatesMapper
@@ -15,9 +16,10 @@ var _gridHeight;
  * @param canvas the canvas where we will be drawing
  */
 export function init(modelWidth, modelHeight, canvas) {
-  _gridWidth = modelWidth;
-  _gridHeight = modelHeight;
-  _canvas = canvas;
+    _gridWidth = modelWidth;
+    _gridHeight = modelHeight;
+    _canvas = canvas;
+    _factor = Math.min(canvas.width, canvas.height);
 }
 
 /**
@@ -25,14 +27,14 @@ export function init(modelWidth, modelHeight, canvas) {
  */
 export function toModelCoordinates(x, y) {
     return [
-      floor(x / _canvas.width * _gridWidth),
-      floor(y / _canvas.height * _gridHeight)
+      floor(x / _factor * _gridWidth),
+      floor(y / _factor * _gridHeight)
     ];
 }
 
 export function toCanvasCoordinates(x, y) {
     return [
-      x / _gridWidth * _canvas.width,
-      y / _gridHeight * _canvas.height
+      x / _gridWidth * _factor,
+      y / _gridHeight * _factor,
     ];
 }
