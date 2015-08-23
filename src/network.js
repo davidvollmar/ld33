@@ -9,6 +9,7 @@ export class Network extends EventEmitter {
 	socket = null;
 
 	constructor (port = 5000) {
+		super();
 		this.port = port;
 	}
 
@@ -17,23 +18,29 @@ export class Network extends EventEmitter {
 			return;
 		}
 		this.socket = io(`http://${location.hostname}:${this.port}`);
-		socket.on('chat message', function (data) {
+		this.socket.on('chat message', function (data) {
 			this.emit('chat', data);
 		});
-		socket.on('message', function (data) {
+		this.socket.on('message', function (data) {
 			this.emit('message', data);
 		});
-		socket.on('disconnect', function () {
+		this.socket.on('disconnect', function () {
 			this.emit('leave');
 		});
 	}
 
 	sendMessage (data) {
-		socket.send('message', data);
+		if(!this.socket){
+			console.log('init first');
+		}
+		this.socket.send('message', data);
 	}
 
 	sendChat (message) {
-		socket.send('chat message', message);
+		if (!this.socket) {
+			console.log('init first');
+		}
+		this.socket.send('chat message', message);
 	}
 }
 
