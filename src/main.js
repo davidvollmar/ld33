@@ -25,7 +25,7 @@ var keypressed = false;
 var activeWorld = null;
 loadWorld();
 
-requestAnimationFrame(animate);
+requestAnimationFrame(frame);
 
 function loadWorld() {
 	var world = new World(levels[0]);
@@ -33,7 +33,14 @@ function loadWorld() {
 	stage.addChild(world.scene);
 }
 
-function animate() {
+function frame() {
+	// game loop
+	update();
+	renderer.render(stage);
+	requestAnimationFrame(frame);
+}
+
+function update() {
 	kd.tick();
 
 	if(keypressed) {		
@@ -46,26 +53,36 @@ function animate() {
 		if(activeWorld.monsters) {
 			activeWorld.monsters.forEach((monster) => {
 				//TODO alter model coordinate depending on direction
-				var newCoords = toCanvasCoordinates(monster.modelx, monster.modely);
-				monster.x = newCoords[0];
-				monster.y = newCoords[1];
-				monster.init();
+				if(false) {//TODO if keypress or monster moved to another cell, update model
+					var newCoords = toCanvasCoordinates(monster.modelx - 1, monster.modely);
+					monster.x = newCoords[0];
+					monster.y = newCoords[1];
+				} else {
+					//TODO make depend on what key is pressed etc.
+					monster.x = monster.x - 1;
+					monster.y = monster.y - 1;
+					if(monster.x < 0) {
+						monster.x = 500;
+					}
+					if(monster.y < 0) {
+						monster.y = 500;
+					}
+				}
 			});
 		}
 
-		/*if(activeWorld.walls) {
-			activeWorld.walls.forEach((wall) => {
-				var newCoords = toCanvasCoordinates(wall.modelx, wall.modely);
-				wall.x = newCoords[0];
-				wall.y = newCoords[1];
-				wall.init();
-			});
-		}*/
+		//TODO similarly, make movement depend on keys
+		if(activeWorld.pacman) {
+			activeWorld.pacman.x = activeWorld.pacman.x + 1;
+			activeWorld.pacman.y = activeWorld.pacman.y + 1;
+			if(activeWorld.pacman.x > 500) {
+				activeWorld.pacman.x = 0;
+			}
+			if(activeWorld.pacman.y > 500) {
+				activeWorld.pacman.y = 0;
+			}
+		}
 	}
-
-	renderer.render(stage);	
-	
-	requestAnimationFrame(animate);
 }
 
 var toModelCoordinates = function toModelCoordinates(x, y) {

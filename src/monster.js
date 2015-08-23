@@ -8,15 +8,9 @@ class Monster extends GameObject {
 		// create a texture from an image path
 		var texture = PIXI.Texture.fromImage("resources/images/inverted/ghosts_blue_down_1.png");
 		var sprite = new PIXI.Sprite(texture);
-		sprite.width = 100;
-		sprite.height = 100;
+		sprite.width = this.getSpriteWidth();
+		sprite.height = this.getSpriteHeight();
 		this.addChild(sprite);
-
-		this.init();
-	}
-
-	init() {
-		
 	}
 }
 	
