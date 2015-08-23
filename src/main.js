@@ -102,6 +102,7 @@ function update() {
 			if(activeWorld.pacman.y > 500) {
 				activeWorld.pacman.y = 0;
 			}
+			activeWorld.pacman.update(3);
 		}
 	}
 }
