@@ -34,8 +34,6 @@ function loadWorld () {
 	stage.addChild(world.scene);
 }
 
-var t0 = Date.now();
-
 loop.register(update);
 loop.register(()=> {
 	renderer.render(stage);
@@ -61,7 +59,7 @@ function network () {
 
 }
 
-function update () {
+function update (dt) {
 	kd.tick();
 
 	if (keypressed) {
@@ -69,7 +67,7 @@ function update () {
 	}
 
 	// updating the world.
-	activeWorld.update();
+	activeWorld.update(dt);
 }
 
 kd.A.down(() => {

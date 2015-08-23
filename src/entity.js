@@ -15,6 +15,7 @@ class Entity extends GameObject {
         this.addChild(this.sprite);
 
         this.direction = Direction.RIGHT;
+        this.speed = 4;
     }
 
     update(resource) {
