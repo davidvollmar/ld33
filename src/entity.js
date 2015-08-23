@@ -8,13 +8,23 @@ class Entity extends GameObject {
         super();
         // create a texture from an image path
         var texture = PIXI.Texture.fromImage(resource);
-        var sprite = new PIXI.Sprite(texture);
+        this.sprite = new PIXI.Sprite(texture);
         var spriteSize =  toCanvasCoordinates(1,1);
-        sprite.width = spriteSize[0];
-        sprite.height = spriteSize[0];
-        this.addChild(sprite);
+        this.sprite.width = spriteSize[0];
+        this.sprite.height = spriteSize[0];
+        this.addChild(this.sprite);
 
         this.direction = Direction.RIGHT;
+    }
+
+    update(resource) {
+        this.removeChild(this.sprite);
+        var texture = PIXI.Texture.fromImage(resource);
+        this.sprite = new PIXI.Sprite(texture);
+        var spriteSize =  toCanvasCoordinates(1,1);
+        this.sprite.width = spriteSize[0];
+        this.sprite.height = spriteSize[0];
+        this.addChild(this.sprite);
     }
 }
 
