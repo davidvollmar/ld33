@@ -35,6 +35,9 @@ io.on('connection', function(socket){
     console.log(msg);
     socket.emit('chat message','server response');
   })
+  socket.on('mm'), function(data) {
+
+  }
 });
 
 

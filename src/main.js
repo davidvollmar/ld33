@@ -51,8 +51,21 @@ socket.on('connect', function(){});
 socket.on('chat message', function(data){console.log(data);});
 socket.on('event', function(data){});
 socket.on('disconnect', function(){});
+socket.on('mm', function(data){
+    channel = data;
+    joined = true;
+});
 
-function network(){
+var joined = false;
+var channel = false;
+
+function network() {
+    if(!joined) {
+        socket.emit('mm', 'request-mm');
+    } else {
+        socket.emit(channel, 'hello');
+    }
+
     if(keypressed){
         socket.emit('chat message','key pressed');
     }
