@@ -34,10 +34,14 @@ export class Input {
 		kd.W.press(() => {
 			this.player.direction = UP;
 		});
-
+		
 		kd.UP.press(() => {
-		    this.player.direction = UP;
+			this.player.direction = UP;
 		});
+
+		kd.Q.press(() => {
+			this.player.nextEntity();
+		})
 	}
 
 	tick () {
