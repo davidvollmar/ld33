@@ -14,6 +14,9 @@ class World {
 		this.playingField = new Array(this.modelWidth);
 		for(var i = 0; i<this.modelWidth; i++) {
 			this.playingField[i] = new Array(this.modelHeight);
+			for(var j = 0; j<this.modelHeight; j++) {
+				this.playingField[i][j] = new Cell(CellType.PILL);
+			}
 		}
 
 		this.monsters = this.json.monsters.map((def) => {
@@ -23,13 +26,6 @@ class World {
 			return monster;
 		});
 
-		/*this.walls = this.json.walls.map((def) => {
-			console.log("def: " + def.x + " " + def.y + " " + def.width + " "+ def.height);
-			var wall = new Wall(def.width, def.height);
-			wall.x = def.x;
-			wall.y = def.y;
-			return wall;
-		});*/
 		this.json.walls.map((def) => {
 			if(this.playingField) {
 				for(var i = def.x; i<def.x + def.width; i++) {
