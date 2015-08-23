@@ -14,10 +14,10 @@ export default class World {
 		this.modelWidth = this.json.playingField.width;
 		this.modelHeight = this.json.playingField.height;
 
-        this.nrCells = this.modelWidth * this.modelHeight;
-        this.nrWalls = 0;
+		this.nrCells = this.modelWidth * this.modelHeight;
+		this.nrWalls = 0;
 
-        this.playingField = new Array(this.modelWidth);
+		this.playingField = new Array(this.modelWidth);
 		for (var i = 0; i < this.modelWidth; i++) {
 			this.playingField[i] = new Array(this.modelHeight);
 			for (var j = 0; j < this.modelHeight; j++) {
@@ -89,6 +89,12 @@ export default class World {
 		this.entities.forEach((entity) => {
 			let cellSize = toCanvasCoordinates(1, 1);
 			
+			// update x and y when walking of the screen
+			const canvasWidth = cellSize[0] * this.modelWidth;
+			const canvasHeight = cellSize[1] * this.modelHeight;
+			entity.x = (entity.x + cellSize[0] / 2 + canvasWidth) % canvasWidth - cellSize[0] / 2;
+			entity.y = (entity.y + cellSize[1] / 2 + canvasWidth) % canvasWidth - cellSize[0] / 2;
+			
 			// move to the target positions
 			let targetPos = toCanvasCoordinates(entity.modelx, entity.modely);
 			// how much left to move
@@ -121,6 +127,13 @@ export default class World {
 				// reset ticks left
 				entity.ticksLeft = entity.walkDuration;
 				
+				// whether we did a move already
+				let hasMoved = false;
+				
+				// fix the modelx and modely for when we are out of screen
+				entity.modelx = (entity.modelx + this.modelWidth) % this.modelWidth;
+				entity.modely = (entity.modely + this.modelHeight) % this.modelHeight;
+				
 				// check if we can move into the desired location
 				if (entity.newDirection) {
 					let newDir = dirToCoord(entity.newDirection);
@@ -130,18 +143,21 @@ export default class World {
 						entity.modely += newDir[1];
 						entity.direction = entity.newDirection;
 						entity.newDirection = null;
-						return; // skip the rest
+						hasMoved = true; // we have moved now
 					}
 				}
 				
-				// we did not went into new Direction
-				// continue with old Direction
-				let oldDir = dirToCoord(entity.direction);
-				if (this.canMove(entity.modelx + oldDir[0], entity.modely + oldDir[1])) {
-					// we can keep moving
-					entity.modelx += oldDir[0];
-					entity.modely += oldDir[1];
-					return; // to keep the code kind of symmetric
+				// handle old direction
+				if (!hasMoved) {
+					// we did not went into new Direction
+					// continue with old Direction
+					let oldDir = dirToCoord(entity.direction);
+					if (this.canMove(entity.modelx + oldDir[0], entity.modely + oldDir[1])) {
+						// we can keep moving
+						entity.modelx += oldDir[0];
+						entity.modely += oldDir[1];
+						return; // to keep the code kind of symmetric
+					}
 				}
 			}
 
@@ -155,8 +171,8 @@ export default class World {
 	 * Determines whether an entity can move to the given coordinates
 	 */
 	canMove (modelx, modely) {
-		modelx %= 26;
-		modely %= 26;
+		modelx = (modelx + this.modelWidth) % this.modelWidth;
+		modely = (modely + this.modelHeight) % this.modelHeight;
 		return this.playingField[modelx][modely].cellType !== CellType.WALL;
 	}
 }
