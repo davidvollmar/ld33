@@ -4,6 +4,10 @@ var World = require('./world');
 var io = require('socket.io-client');
 import * as CoordinatesMapper from './CoordinatesMapper';
 
+import {GameLoop} from './gameloop';
+
+const loop = new GameLoop();
+
 var renderer = new PIXI.CanvasRenderer(window.innerWidth, window.innerHeight);
 
 document.body.appendChild(renderer.view);
@@ -20,13 +24,11 @@ var activeWorld = null;
 loadWorld();
 var activeEntity = null;
 
-requestAnimationFrame(frame);
-
-function loadWorld() {
+function loadWorld () {
 	// setting up the CoordinatesMapper
 	var playField = levels[0].playingField;
 	CoordinatesMapper.init(playField.width, playField.height, renderer);
-	
+
 	var world = new World(levels[0]);
 	activeWorld = world;
 	stage.addChild(world.scene);
@@ -34,57 +36,45 @@ function loadWorld() {
 
 var t0 = Date.now();
 
-function frame() {
-    var now = Date.now();
-    var dT = now - t0;
-    t0 = now;
-    //console.log(dT);
-
-    network();
-	// game loop
-	update();
+loop.register(update);
+loop.register(()=> {
 	renderer.render(stage);
-	requestAnimationFrame(frame);
-}
+});
+loop.start();
+
 var socket = io('http://localhost:5000');
-socket.on('connect', function(){});
-socket.on('chat message', function(data){console.log(data);});
-socket.on('event', function(data){});
-socket.on('disconnect', function(){});
-socket.on('mm', function(data){
-    channel = data;
-    joined = true;
+
+socket.on('connect', function () {
+});
+socket.on('chat message', function (data) {
+	console.log(data);
+});
+socket.on('event', function (data) {
+});
+socket.on('disconnect', function () {
 });
 
-var joined = false;
-var channel = false;
+function network () {
+	if (keypressed) {
+		socket.emit('chat message', 'key pressed');
+	}
 
-function network() {
-    if(!joined) {
-        socket.emit('mm', 'request-mm');
-    } else {
-        socket.emit(channel, 'hello');
-    }
-
-    if(keypressed){
-        socket.emit('chat message','key pressed');
-    }
 }
 
-function update() {
+function update () {
 	kd.tick();
 
-	if(keypressed) {
+	if (keypressed) {
 		//TODO do things
 	}
-	
+
 	// updating the world.
 	activeWorld.update();
 }
 
 kd.A.down(() => {
-	if(activeEntity) {
-		if(canMove(activeEntity.modelx, activeEntity.modely-1)) {
+	if (activeEntity) {
+		if (canMove(activeEntity.modelx, activeEntity.modely - 1)) {
 			activeEntity.modely--;
 		}//0,0 is topleft
 	}
