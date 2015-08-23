@@ -78,46 +78,8 @@ function update() {
 		//TODO do things
 	}
 	
-	if (activeWorld) {	
-		if(activeWorld.monsters) {
-			activeWorld.monsters.forEach((monster) => {
-				//TODO alter model coordinate depending on direction
-				if(false) {//TODO if keypress or monster moved to another cell, update model
-					var newCoords = CoordinatesMapper.toCanvasCoordinates(monster.modelx - 1, monster.modely);
-					monster.x = newCoords[0];
-					monster.y = newCoords[1];
-				} else {
-					//TODO make depend on what key is pressed etc.
-					monster.x = monster.x - 1;
-					monster.y = monster.y - 1;
-					if(monster.x < 0) {
-						monster.x = 500;
-					}
-					if(monster.y < 0) {
-						monster.y = 500;
-					}
-				}
-				monster.update(1);
-			});
-		}
-
-		//TODO similarly, make movement depend on keys
-		if(activeWorld.pacman) {
-			activeWorld.pacman.x = activeWorld.pacman.x + 1;
-
-            var modelCoordinates = CoordinatesMapper.toModelCoordinates(activeWorld.pacman.x, activeWorld.pacman.y);
-            activeWorld.pacman.modelx = modelCoordinates[0];
-            activeWorld.pacman.modely = modelCoordinates[1];
-
-            if(activeWorld.pacman.x > 500) {
-				activeWorld.pacman.x = 0;
-			}
-			if(activeWorld.pacman.y > 500) {
-				activeWorld.pacman.y = 0;
-			}
-			activeWorld.pacman.update(3);
-		}
-	}
+	// updating the world.
+	activeWorld.update();
 }
 
 kd.A.down(() => {
@@ -141,28 +103,3 @@ kd.W.down(() => {
 	keypressed = false;
 });
 
-function canMove(newModelx, newModely) {
-	var canMove = true;
-
-	if(activeWorld.playingField) {
-		if(activeWorld[newModelx][newModely].cellType == CellType.WALL) {
-			canMove = false;
-		}
-	}
-
-	if(activeWorld.monsters) {
-		activeWorld.monsters.forEach((monster) => {
-
-			if(monster != activeEntity) {
-				if(monster.modelx == newModelx && monster.modely == newModely) {
-					canMove = false;
-					if(activeEntity instanceof Pacman) {
-						//TODO pacman dies
-					}
-				}
-			}
-		});
-	}
-
-	return canMove;
-}

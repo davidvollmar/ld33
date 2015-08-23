@@ -14,7 +14,7 @@ class Entity extends GameObject {
         this.sprite.height = spriteSize[0];
         this.addChild(this.sprite);
 
-        this.currentDirection = Direction.RIGHT;
+        this.direction = Direction.RIGHT;
     }
 
     update(resource) {
