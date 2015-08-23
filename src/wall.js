@@ -19,8 +19,9 @@ class Wall extends Cell {
         // create a texture from an image path
     		var texture = PIXI.Texture.fromImage("resources/images/inverted/wall.png");
     		var sprite = new PIXI.Sprite(texture);
-    		sprite.width = this.getSpriteWidth();
-    		sprite.height = this.getSpriteHeight();
+            var spriteSize =  toCanvasCoordinates(1,1);
+    		sprite.width = spriteSize[0];
+    		sprite.height = spriteSize[0];
         // TODO: setting sprite x and y
         	var canvasCoords = toCanvasCoordinates(x,y);
 			this.x = canvasCoords[0];
