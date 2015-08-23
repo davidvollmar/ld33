@@ -10,7 +10,7 @@ import {toModelCoordinates, toCanvasCoordinates} from './CoordinatesMapper';
 import {LEFT, RIGHT, UP, DOWN} from './Direction';
 
 export default class World {
-	constructor(json) {
+	constructor (json) {
 		this.json = json;
 		this.modelWidth = this.json.playingField.width;
 		this.modelHeight = this.json.playingField.height;
@@ -47,7 +47,7 @@ export default class World {
 		});
 
 		this.json.semis.map((def) => {
-			if(this.playingField) {
+			if (this.playingField) {
 				for (var i = def.x; i < def.x + def.width; i++) {
 					for (var j = def.y; j < def.y + def.height; j++) {
 						this.nrSemis++;
@@ -102,52 +102,52 @@ export default class World {
 		// update the entities
 		this.entities.forEach((entity) => {
 			let cellSize = toCanvasCoordinates(1, 1);
-			
+
 			// update x and y when walking of the screen
 			const canvasWidth = cellSize[0] * this.modelWidth;
 			const canvasHeight = cellSize[1] * this.modelHeight;
 			entity.x = (entity.x + cellSize[0] / 2 + canvasWidth) % canvasWidth - cellSize[0] / 2;
 			entity.y = (entity.y + cellSize[1] / 2 + canvasWidth) % canvasWidth - cellSize[0] / 2;
-			
+
 			// move to the target positions
 			let targetPos = toCanvasCoordinates(entity.modelx, entity.modely);
 			// how much left to move
 			let moveX = targetPos[0] - entity.x;
 			let moveY = targetPos[1] - entity.y;
-			
+
 			// the distance we can move
 			let distModel = (ticksPerSecond / entity.walkDuration) * dt / 1000;
 			let distX = distModel * cellSize[0];
 			let distY = distModel * cellSize[1];
-			
+
 			// and updating the entities
 			entity.x += Math.sign(moveX) * Math.min(distX, Math.abs(moveX));
 			entity.y += Math.sign(moveY) * Math.min(distY, Math.abs(moveY));
-			
+
 			// update the animations
 			entity.update(dt);
 		});
 	}
-	
+
 	/**
 	 * Update functional that will be called on a fixed rate.
 	 * To keep it consistent with update, this should be called each second on average.
 	 */
-	fixedUpdate() {
+	fixedUpdate () {
 		this.entities.forEach((entity) => {
-			
+
 			if (--entity.ticksLeft <= 0) { // calculate new direction
-				
+
 				// reset ticks left
 				entity.ticksLeft = entity.walkDuration;
-				
+
 				// whether we did a move already
 				let hasMoved = false;
-				
+
 				// fix the modelx and modely for when we are out of screen
 				entity.modelx = (entity.modelx + this.modelWidth) % this.modelWidth;
 				entity.modely = (entity.modely + this.modelHeight) % this.modelHeight;
-				
+
 				// check if we can move into the desired location
 				if (entity.newDirection) {
 					let newDir = dirToCoord(entity.newDirection);
@@ -160,7 +160,7 @@ export default class World {
 						hasMoved = true; // we have moved now
 					}
 				}
-				
+
 				// handle old direction
 				if (!hasMoved) {
 					// we did not went into new Direction
@@ -194,16 +194,20 @@ export default class World {
 /**
  * Calculates the coordinates that goes into that direction
  */
-function dirToCoord(direction) {
-	switch(direction) {
-		case LEFT: return [-1, 0];
-		case RIGHT: return [1, 0];
-		case UP: return [0, -1];
-		case DOWN: return [0, 1];
+function dirToCoord (direction) {
+	switch (direction) {
+		case LEFT:
+			return [-1, 0];
+		case RIGHT:
+			return [1, 0];
+		case UP:
+			return [0, -1];
+		case DOWN:
+			return [0, 1];
 	}
 }
 
-function moveInDirection(entity, direction, dt, world) {
+function moveInDirection (entity, direction, dt, world) {
 	var size = toCanvasCoordinates(1, 1);
 	var canvasSize = toCanvasCoordinates(world.modelWidth, world.modelHeight);
 

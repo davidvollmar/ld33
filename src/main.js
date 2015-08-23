@@ -29,9 +29,6 @@ var levels = {
 var activeWorld = null;
 loadWorld();
 
-player.addEntity(activeWorld.pacman);
-player.activeEntityId = 0;
-
 function loadWorld () {
 	// setting up the CoordinatesMapper
 	var playField = levels[0].playingField;
@@ -41,6 +38,12 @@ function loadWorld () {
 	networkListener.world = world;
 	activeWorld = world;
 	stage.addChild(world.scene);
+	player.entities = [];
+	player.addEntity(activeWorld.pacman);
+	world.monsters.forEach(monster=> {
+		player.addEntity(monster);
+	});
+	player.activeEntityId = 0;
 }
 
 network.init();
@@ -54,7 +57,7 @@ loop.register(input.tick);
 loop.register(()=> {
 	renderer.render(stage);
 });
-loop.registerFixed(()=>{
+loop.registerFixed(()=> {
 	activeWorld.fixedUpdate();
 });
 

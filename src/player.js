@@ -15,6 +15,14 @@ export class Player {
 		}
 	}
 
+	get activeEntityId () {
+		return this.activeEntity;
+	}
+
+	nextEntity () {
+		console.log('next');
+		this.activeEntityId = (this.activeEntityId + 1) % this.entities.length;
+	}
 
 	addEntity (entity) {
 		this.entities.push(entity);
