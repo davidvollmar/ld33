@@ -70,8 +70,10 @@ function update() {
 		//TODO similarly, make movement depend on keys
 		if(activeWorld.pacman) {
 			activeWorld.pacman.x = activeWorld.pacman.x + 1;
-			activeWorld.pacman.y = activeWorld.pacman.y + 1;
 
+            var modelCoordinates = CoordinatesMapper.toModelCoordinates(activeWorld.pacman.x, activeWorld.pacman.y);
+            activeWorld.pacman.modelx = modelCoordinates[0];
+            activeWorld.pacman.modely = modelCoordinates[1];
 
             if(activeWorld.pacman.x > 500) {
 				activeWorld.pacman.x = 0;
@@ -104,7 +106,7 @@ kd.W.down(() => {
 	keypressed = false;
 });
 
-function tryToMove(newModelx, newModely) {
+function canMove(newModelx, newModely) {
 	var canMove = true;
 
 	if(activeWorld.playingField) {
@@ -126,7 +128,6 @@ function tryToMove(newModelx, newModely) {
 			}
 		});
 	}
-
 
 	return canMove;
 }
