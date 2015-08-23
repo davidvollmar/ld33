@@ -6,7 +6,7 @@ var Wall = require('./wall');
 var Pacman = require('./pacman.js');
 import { toModelCoordinates, toCanvasCoordinates } from './CoordinatesMapper';
 
-class World {
+export default class World {
 	constructor(json) {
 		this.json = json;
 
@@ -61,7 +61,13 @@ class World {
 
 		stage.addChild(this.pacman);
 	}
+	
+	
+	/**
+	 * Determines whether an entity can move to the given coordinates
+	 */
+	canMove(modelx, modely) {
+		return activeWorld[modelx][modely].cellType !== CellType.WALL;
+	}
 
 }
-
-module.exports = World;
