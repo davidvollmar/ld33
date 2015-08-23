@@ -16,14 +16,11 @@ var levels = {
 	0: require('../levels/level.json')
 };
 
-var wintext = new PIXI.Text("Test change", {
-					font: "100px Arial",
-					fill: 'white'
-				});
 var keypressed = false;
 
 var activeWorld = null;
 loadWorld();
+var activeEntity = null;
 
 requestAnimationFrame(frame);
 
@@ -43,10 +40,8 @@ function frame() {
 function update() {
 	kd.tick();
 
-	if(keypressed) {		
-		stage.addChild(wintext);
-	} else {
-		stage.removeChild(wintext);		
+	if(keypressed) {
+		//TODO do things
 	}
 	
 	if (activeWorld) {	
@@ -95,7 +90,15 @@ var toCanvasCoordinates = function toCanvasCoordinates(x, y) {
 		y / activeWorld.modelHeight * canvasHeight];
 }
 
-kd.Q.down(() => {
+kd.A.down(() => {
+	keypressed = true;
+});
+
+kd.S.down(() => {
+	keypressed = true;
+});
+
+kd.D.down(() => {
 	keypressed = true;
 });
 
