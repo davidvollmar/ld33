@@ -24,8 +24,6 @@ var levels = {
 	0: require('../levels/level.json')
 };
 
-var keypressed = false;
-
 var activeWorld = null;
 loadWorld();
 
@@ -63,10 +61,6 @@ input.listen();
 
 
 function update (dt) {
-	if (keypressed) {
-		//TODO do things
-	}
-
 	// updating the world.
 	activeWorld.update(dt);
 }
