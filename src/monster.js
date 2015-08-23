@@ -1,7 +1,7 @@
 var PIXI = require('pixi.js');
 var GameObject = require('./gameobject');
 var Entity = require('./entity');
-var Direction = require('./direction');
+var Direction = require('./Direction');
 
 class Monster extends Entity {
 
