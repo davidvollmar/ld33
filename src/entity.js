@@ -29,7 +29,6 @@ class Entity extends GameObject {
     }
 
     requestNewDirection(dir) {
-        console.log(dir);
         this.newDirection = dir;
     }
 }
