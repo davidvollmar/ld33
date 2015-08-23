@@ -1,12 +1,9 @@
 var PIXI = require('pixi.js');
 var kd = require('keydrown');
 var World = require('./world');
+import * as CoordinatesMapper from './CoordinatesMapper';
 
-//var canvasHeight = document.body.clientHeight; //this does not work in chrome apparently
-var canvasHeight = 900;
-//var canvasWidth = document.body.clientWidth;*/
-var canvasWidth = 900;
-var renderer = new PIXI.CanvasRenderer(canvasWidth, canvasHeight);
+var renderer = new PIXI.CanvasRenderer(window.innerWidth, window.innerHeight);
 
 document.body.appendChild(renderer.view);
 
@@ -16,72 +13,118 @@ var levels = {
 	0: require('../levels/level.json')
 };
 
-var wintext = new PIXI.Text("Test change", {
-					font: "100px Arial",
-					fill: 'white'
-				});
 var keypressed = false;
 
 var activeWorld = null;
 loadWorld();
+var activeEntity = null;
 
-requestAnimationFrame(animate);
+requestAnimationFrame(frame);
 
 function loadWorld() {
+	// setting up the CoordinatesMapper
+	var playField = levels[0].playingField;
+	CoordinatesMapper.init(playField.width, playField.height, renderer);
+	
 	var world = new World(levels[0]);
 	activeWorld = world;
 	stage.addChild(world.scene);
 }
 
-function animate() {
+function frame() {
+	// game loop
+	update();
+	renderer.render(stage);
+	requestAnimationFrame(frame);
+}
+
+function update() {
 	kd.tick();
 
-	if(keypressed) {		
-		stage.addChild(wintext);
-	} else {
-		stage.removeChild(wintext);		
+	if(keypressed) {
+		//TODO do things
 	}
 	
 	if (activeWorld) {	
 		if(activeWorld.monsters) {
 			activeWorld.monsters.forEach((monster) => {
 				//TODO alter model coordinate depending on direction
-				var newCoords = toCanvasCoordinates(monster.modelx, monster.modely);
-				monster.x = newCoords[0];
-				monster.y = newCoords[1];
-				monster.init();
+				if(false) {//TODO if keypress or monster moved to another cell, update model
+					var newCoords = CoordinatesMapper.toCanvasCoordinates(monster.modelx - 1, monster.modely);
+					monster.x = newCoords[0];
+					monster.y = newCoords[1];
+				} else {
+					//TODO make depend on what key is pressed etc.
+					monster.x = monster.x - 1;
+					monster.y = monster.y - 1;
+					if(monster.x < 0) {
+						monster.x = 500;
+					}
+					if(monster.y < 0) {
+						monster.y = 500;
+					}
+				}
 			});
 		}
 
-		/*if(activeWorld.walls) {
-			activeWorld.walls.forEach((wall) => {
-				var newCoords = toCanvasCoordinates(wall.modelx, wall.modely);
-				wall.x = newCoords[0];
-				wall.y = newCoords[1];
-				wall.init();
-			});
-		}*/
+		//TODO similarly, make movement depend on keys
+		if(activeWorld.pacman) {
+			activeWorld.pacman.x = activeWorld.pacman.x + 1;
+			activeWorld.pacman.y = activeWorld.pacman.y + 1;
+			if(activeWorld.pacman.x > 500) {
+				activeWorld.pacman.x = 0;
+			}
+			if(activeWorld.pacman.y > 500) {
+				activeWorld.pacman.y = 0;
+			}
+		}
 	}
-
-	renderer.render(stage);	
-	
-	requestAnimationFrame(animate);
 }
 
-var toModelCoordinates = function toModelCoordinates(x, y) {
-	return [x / canvasWidth * activeWorld.modelWidth,
-		y / canvasHeight * activeWorld.modelHeight];
-}
+kd.A.down(() => {
+	if(activeEntity) {
+		if(canMove(activeEntity.modelx, activeEntity.modely-1)) {
+			activeEntity.modely--;
+		}//0,0 is topleft
+	}
+	keypressed = true;
+});
 
-var toCanvasCoordinates = function toCanvasCoordinates(x, y) {
-	return [x / activeWorld.modelWidth * canvasWidth,
-		y / activeWorld.modelHeight * canvasHeight];
-}
+kd.S.down(() => {
+	keypressed = true;
+});
 
-kd.Q.down(() => {
+kd.D.down(() => {
 	keypressed = true;
 });
 
 kd.W.down(() => {
 	keypressed = false;
 });
+
+function tryToMove(newModelx, newModely) {
+	var canMove = true;
+
+	if(activeWorld.playingField) {
+		if(activeWorld[newModelx][newModely].cellType == CellType.WALL) {
+			canMove = false;
+		}
+	}
+
+	if(activeWorld.monsters) {
+		activeWorld.monsters.forEach((monster) => {
+
+			if(monster != activeEntity) {
+				if(monster.modelx == newModelx && monster.modely == newModely) {
+					canMove = false;
+					if(activeEntity instanceof Pacman) {
+						//TODO pacman dies
+					}
+				}
+			}
+		});
+	}
+
+
+	return canMove;
+}
