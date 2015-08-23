@@ -4,20 +4,24 @@ var Cell = require('./cell');
 var CellType = require('./CellType');
 var Wall = require('./wall');
 var Pacman = require('./pacman.js');
+var PillCell = require('./PillCell');
 import {toModelCoordinates, toCanvasCoordinates} from './CoordinatesMapper';
 import {LEFT, RIGHT, UP, DOWN} from './Direction';
 
 export default class World {
 	constructor (json) {
 		this.json = json;
-
 		this.modelWidth = this.json.playingField.width;
 		this.modelHeight = this.json.playingField.height;
-		this.playingField = new Array(this.modelWidth);
+
+        this.nrCells = this.modelWidth * this.modelHeight;
+        this.nrWalls = 0;
+
+        this.playingField = new Array(this.modelWidth);
 		for (var i = 0; i < this.modelWidth; i++) {
 			this.playingField[i] = new Array(this.modelHeight);
 			for (var j = 0; j < this.modelHeight; j++) {
-				this.playingField[i][j] = new Cell(CellType.PILL);
+				this.playingField[i][j] = new PillCell(i, j);
 			}
 		}
 
@@ -28,15 +32,19 @@ export default class World {
 			return monster;
 		});
 
+
 		this.json.walls.map((def) => {
 			if (this.playingField) {
 				for (var i = def.x; i < def.x + def.width; i++) {
 					for (var j = def.y; j < def.y + def.height; j++) {
+                        this.nrWalls++;
 						this.playingField[i][j] = new Wall(i, j);
 					}
 				}
 			}
 		});
+
+        this.nrPills = this.nrCells - this.nrWalls - 1; //-1 for pacman
 
 		this.pacman = new Pacman();
 		this.pacman.modelx = this.json.pacman.x;
@@ -111,6 +119,10 @@ export default class World {
 			moveInDirection(entity, entity.direction, dt, this);
 			entity.update();
 			// TODO: handle collisions
+
+            if(this.nrPills == 0) {
+                //TODO handle win
+            }
 		});
 	}
 
