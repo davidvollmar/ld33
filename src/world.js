@@ -117,7 +117,7 @@ export default class World {
 				}
 			}
 			moveInDirection(entity, entity.direction, dt, this);
-			entity.update();
+			entity.update(dt);
 			// TODO: handle collisions
 
             if(this.nrPills == 0) {
