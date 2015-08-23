@@ -5,9 +5,9 @@ export class Player {
 
 	set activeEntityId (id) {
 		if (id < this.entities.length) {
-			this.entities[this.activeEntity] = false;
+			this.entities[this.activeEntity].active = false;
 			this.activeEntity = id;
-			this.entities[this.activeEntity] = true;
+			this.entities[this.activeEntity].active = true;
 		} else {
 			throw 'Invalid entity id for player';
 		}
