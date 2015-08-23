@@ -1,12 +1,15 @@
 var PIXI = require('pixi.js');
 var kd = require('keydrown');
 var World = require('./world');
-var io = require('socket.io-client');
+
 import * as CoordinatesMapper from './CoordinatesMapper';
 
 import {GameLoop} from './gameloop';
+import {Network, NetworkListener} from './network';
 
 const loop = new GameLoop();
+const network = new Network();
+const networkListener = new NetworkListener(network);
 
 var renderer = new PIXI.CanvasRenderer(window.innerWidth, window.innerHeight);
 
@@ -30,9 +33,13 @@ function loadWorld () {
 	CoordinatesMapper.init(playField.width, playField.height, renderer);
 
 	var world = new World(levels[0]);
+	networkListener
 	activeWorld = world;
 	stage.addChild(world.scene);
 }
+
+network.init();
+networkListener.listen();
 
 loop.register(update);
 loop.register(()=> {
@@ -40,24 +47,6 @@ loop.register(()=> {
 });
 loop.start();
 
-var socket = io('http://localhost:5000');
-
-socket.on('connect', function () {
-});
-socket.on('chat message', function (data) {
-	console.log(data);
-});
-socket.on('event', function (data) {
-});
-socket.on('disconnect', function () {
-});
-
-function network () {
-	if (keypressed) {
-		socket.emit('chat message', 'key pressed');
-	}
-
-}
 
 function update (dt) {
 	kd.tick();

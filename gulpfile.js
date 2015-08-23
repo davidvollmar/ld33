@@ -57,7 +57,7 @@ gulp.task('webserver', function () {
 			port: process.env.PORT || 8000,
 			livereload: {
 				enable: true,
-				port: process.env.PORT + 1 || 8001
+				port: 1 + parseInt(process.env.PORT, 10) || 8001
 			}
 		}));
 });
